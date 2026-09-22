@@ -1,0 +1,23 @@
+# Neutralinojs binaries and builds
+/bin
+/dist
+
+# Neutralinojs client (minified)
+neutralino.js
+
+# Neutralinojs related files
+.storage
+.tmp
+*.log
+.auth_secret
+
+# Node
+node_modules/
+
+# Vite build output into resources/
+/resources/index.html
+/resources/assets/
+
+# Editor / OS
+.DS_Store
+Thumbs.db
