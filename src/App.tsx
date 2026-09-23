@@ -9,6 +9,7 @@ import {
 } from './tools/registry';
 import { toolComponents } from './tools/components';
 import { useThemeStore } from './stores/theme';
+import logo from './icons/logo.png';
 
 const categoryOrder: ToolCategory[] = ['encode', 'time', 'text', 'gen'];
 
@@ -79,9 +80,11 @@ function Sidebar({
   return (
     <aside className="flex w-60 shrink-0 flex-col border-r border-black/10 bg-white/60 dark:border-white/10 dark:bg-black/20">
       <div className="flex items-center gap-2 px-4 pt-4 pb-2">
-        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-500 text-sm font-bold text-white">
-          D
-        </div>
+        <img
+          src={logo}
+          alt="DevBox"
+          className="h-8 w-8 rounded-lg object-cover"
+        />
         <div>
           <div className="text-sm font-semibold leading-none">DevBox</div>
           <div className="mt-0.5 text-[10px] opacity-50">Developer Toolbox</div>
