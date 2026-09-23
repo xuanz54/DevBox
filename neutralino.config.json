@@ -22,7 +22,6 @@
     "clipboard.*",
     "filesystem.*",
     "dialog.*",
-    "net.fetch",
     "debug.log"
   ],
   "modes": {

@@ -77,7 +77,7 @@ export async function saveTextFile(suggestedName: string, content: string): Prom
     try {
       const result = (await os.showSaveDialog('保存文件', {
         defaultPath: suggestedName,
-        filters: [{ name: 'Text', extensions: ['txt', 'json', 'md'] }],
+        filters: [{ name: 'Text / Data', extensions: ['txt', 'json', 'md', 'csv', 'yaml', 'yml', 'svg', 'html', 'log'] }],
       })) as { filePath?: string } | string | null;
       const path = typeof result === 'string' ? result : result?.filePath;
       if (!path) return false;
@@ -95,6 +95,43 @@ export async function saveTextFile(suggestedName: string, content: string): Prom
     a.download = suggestedName;
     a.click();
     URL.revokeObjectURL(url);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+export async function saveImageFile(
+  suggestedName: string,
+  dataUrl: string,
+): Promise<boolean> {
+  if (isNative()) {
+    try {
+      const result = (await os.showSaveDialog('保存图片', {
+        defaultPath: suggestedName,
+        filters: [{ name: 'Image / Web', extensions: ['png', 'svg'] }],
+      })) as { filePath?: string } | string | null;
+      const path = typeof result === 'string' ? result : result?.filePath;
+      if (!path) return false;
+      const meta = /^data:[^;]+;base64,(.+)$/.exec(dataUrl);
+      if (meta?.[1]) {
+        const bin = atob(meta[1]);
+        const bytes = new Uint8Array(bin.length);
+        for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+        await filesystem.writeBinaryFile(path, bytes.buffer);
+      } else {
+        await filesystem.writeFile(path, dataUrl);
+      }
+      return true;
+    } catch (e) {
+      console.error('saveImageFile native failed', e);
+    }
+  }
+  try {
+    const a = document.createElement('a');
+    a.href = dataUrl;
+    a.download = suggestedName;
+    a.click();
     return true;
   } catch {
     return false;

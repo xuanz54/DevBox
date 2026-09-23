@@ -8,6 +8,13 @@ const SETS = {
   symbol: '!@#$%^&*()-_=+[]{};:,.<>?',
 } as const;
 
+const SET_LABELS: Record<SetKey, string> = {
+  lower: '小写字母',
+  upper: '大写字母',
+  digit: '数字',
+  symbol: '符号',
+};
+
 type SetKey = keyof typeof SETS;
 
 function randomInt(max: number): number {
@@ -94,7 +101,7 @@ export default function PasswordTool() {
   return (
     <ToolPage
       title="密码生成"
-      desc="可配置字符集与长度，本地安全随机"
+      desc="本地安全随机，可配置字符集与长度；不用联网，不上传任何数据"
       actions={
         <>
           <CopyButton text={items[0] ?? ''} label="复制第一个" />
@@ -136,7 +143,7 @@ export default function PasswordTool() {
           排除易混淆（I l 1 O 0 o）
         </label>
         <span className="text-xs opacity-60">
-          池大小 {poolSize} · 约 {bits} bits
+          字符池 {poolSize} 个 · 约 {bits} 比特（bits）随机度
         </span>
       </div>
       <div className="mb-4 flex flex-wrap gap-2">
@@ -147,7 +154,7 @@ export default function PasswordTool() {
             className={`${btn(sets.includes(k))} ${sets.includes(k) ? '' : 'opacity-60'}`}
             onClick={() => toggleSet(k)}
           >
-            {k}
+            {SET_LABELS[k]}
           </button>
         ))}
         <button type="button" className={btn()} onClick={generate}>

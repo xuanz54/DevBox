@@ -16,7 +16,7 @@ export default function HtmlEntityTool() {
   return (
     <ToolPage
       title="HTML 实体"
-      desc="特殊字符转义与还原"
+      desc="HTML 实体（Entity，网页里用 &名字; 或 &#数字; 写法表示 < > & 等特殊字符）转义与还原"
       actions={
         <>
           <div className="flex overflow-hidden rounded-md border border-black/10 text-xs dark:border-white/10">

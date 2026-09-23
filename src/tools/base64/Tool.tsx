@@ -29,7 +29,7 @@ export default function Base64Tool() {
   return (
     <ToolPage
       title="Base64"
-      desc="UTF-8 文本编码 / 解码"
+      desc="Base64（一种把任意内容用 64 个可打印字符来表示的编码方式）与原文互转，支持中文等 UTF-8 字符"
       actions={
         <>
           <div className="flex overflow-hidden rounded-md border border-black/10 text-xs dark:border-white/10">

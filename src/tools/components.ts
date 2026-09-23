@@ -14,7 +14,14 @@ import CaseTool from './case/Tool';
 import HashTool from './hash/Tool';
 import UuidTool from './uuid/Tool';
 import PasswordTool from './password/Tool';
-import HttpTool from './http/Tool';
+import UnitTool from './unit/Tool';
+import YamlTool from './yaml/Tool';
+import CsvTool from './csv/Tool';
+import DateTool from './date/Tool';
+import MdTool from './md/Tool';
+import QrTool from './qr/Tool';
+import RandomTool from './random/Tool';
+import ColorTool from './color/Tool';
 
 export const toolComponents: Record<string, ComponentType> = {
   'json-format': JsonFormatTool,
@@ -32,5 +39,12 @@ export const toolComponents: Record<string, ComponentType> = {
   hash: HashTool,
   uuid: UuidTool,
   password: PasswordTool,
-  http: HttpTool,
+  unit: UnitTool,
+  yaml: YamlTool,
+  csv: CsvTool,
+  date: DateTool,
+  md: MdTool,
+  qr: QrTool,
+  random: RandomTool,
+  color: ColorTool,
 };

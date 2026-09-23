@@ -76,7 +76,7 @@ export default function RegexTool() {
   return (
     <ToolPage
       title="正则测试"
-      desc="实时匹配、分组查看、替换预览"
+      desc="正则表达式（用特殊符号描述文本规则，如 \\d+ 表示连续数字）实时匹配、查看捕获分组、替换预览"
       actions={<CopyButton text={replaced} label="复制替换结果" />}
     >
       <ErrorBanner message={compiled.ok ? '' : compiled.error} />

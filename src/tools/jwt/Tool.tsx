@@ -27,7 +27,7 @@ export default function JwtTool() {
   return (
     <ToolPage
       title="JWT 解析"
-      desc="解码 Header / Payload（本地，不联网验签）"
+      desc="JSON Web Token（JWT，一种在客户端与服务器之间传递身份信息的令牌）解码：查看头部 Header（算法等元信息）和载荷 Payload（用户数据、过期时间），仅本地解码，不联网验签"
       actions={
         <>
           <button
@@ -37,13 +37,13 @@ export default function JwtTool() {
           >
             示例
           </button>
-          <CopyButton text={payloadText} label="复制 Payload" />
+          <CopyButton text={payloadText} label="复制载荷 Payload" />
         </>
       }
     >
       <ErrorBanner message={error} />
-      <Pane label="Token" className="mb-4 min-h-24">
-        <TextArea value={token} onChange={setToken} placeholder="eyJhbGciOi..." />
+      <Pane label="令牌 Token" className="mb-4 min-h-24">
+        <TextArea value={token} onChange={setToken} placeholder="eyJhbGciOi...（粘贴你的 JWT 令牌）" />
       </Pane>
 
       {parts && expiry ? (
@@ -56,27 +56,27 @@ export default function JwtTool() {
             }`}
           >
             {expiry.exp === undefined
-              ? '无 exp 字段'
+              ? '未包含过期时间（exp 字段）'
               : expiry.expired
-                ? `已过期 ${Math.abs(expiry.secondsLeft ?? 0)}s`
-                : `剩余 ${expiry.secondsLeft}s`}
+                ? `已过期 ${Math.abs(expiry.secondsLeft ?? 0)} 秒`
+                : `剩余 ${expiry.secondsLeft} 秒`}
           </span>
           {expiry.expLocal ? <span className="opacity-60">过期于 {expiry.expLocal}</span> : null}
-          <span className="opacity-60">alg: {String(parts.header.alg ?? '—')}</span>
+          <span className="opacity-60">加密算法：{String(parts.header.alg ?? '—')}</span>
         </div>
       ) : null}
 
       <div className="grid min-h-0 grid-cols-2 gap-4">
-        <Pane label="Header" className="min-h-48">
+        <Pane label="头部 Header（算法 / 令牌类型）" className="min-h-48">
           <TextArea value={headerText} readOnly />
         </Pane>
-        <Pane label="Payload" className="min-h-48">
+        <Pane label="载荷 Payload（用户数据 / 过期时间）" className="min-h-48">
           <TextArea value={payloadText} readOnly />
         </Pane>
       </div>
       {parts ? (
         <div className="mt-3 break-all rounded-lg bg-black/5 px-3 py-2 font-mono text-[11px] opacity-60 dark:bg-white/5">
-          signature: {parts.signature || '(空)'}
+          签名 Signature：{parts.signature || '(空)'}
         </div>
       ) : null}
     </ToolPage>

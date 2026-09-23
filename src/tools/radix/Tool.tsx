@@ -4,6 +4,13 @@ import { convertRadix, type Radix } from './core';
 
 const radices: Radix[] = [2, 8, 10, 16];
 
+const radixNames: Record<Radix, string> = {
+  2: '二进制',
+  8: '八进制',
+  10: '十进制',
+  16: '十六进制',
+};
+
 export default function RadixTool() {
   const [input, setInput] = useState('255');
   const [from, setFrom] = useState<Radix>(10);
@@ -25,7 +32,7 @@ export default function RadixTool() {
   return (
     <ToolPage
       title="进制转换"
-      desc="2 / 8 / 10 / 16 进制互转，支持任意大整数（BigInt）"
+      desc="进制（数的表示方法，如二进制用 0/1、十六进制用 0-9A-F）互转：2 / 8 / 10 / 16 进制，支持超长整数（BigInt，不限位数的大整数）"
       actions={<CopyButton text={output} />}
     >
       <ErrorBanner message={error} />
@@ -38,7 +45,7 @@ export default function RadixTool() {
         >
           {radices.map((r) => (
             <option key={r} value={r}>
-              {r}
+              {r} 进制（{radixNames[r]}）
             </option>
           ))}
         </select>
@@ -53,7 +60,7 @@ export default function RadixTool() {
         >
           {radices.map((r) => (
             <option key={r} value={r}>
-              {r}
+              {r} 进制（{radixNames[r]}）
             </option>
           ))}
         </select>

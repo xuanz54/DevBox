@@ -1,17 +1,17 @@
 # DevBox
 
-本地优先的开发者工具箱（桌面绿色单文件 exe）。基于 **Neutralino.js + React 18 + TypeScript + Vite + Tailwind CSS**。
+本地优先的开发者工具箱（桌面绿色单文件 exe）。基于 **Neutralino.js + React + Vite + Tailwind CSS**，所有数据本地处理，无需联网。
 
-## 功能（16）
+## 功能（23）
 
 | 分类 | 工具 |
 |---|---|
-| 编码/转换 | JSON 格式化、JSON 对比、Base64、URL 编解码、HTML 实体、进制转换、JWT 解析 |
-| 时间/文本 | 时间戳、正则测试、文本 Diff、文本统计、命名转换 |
-| 生成/哈希 | SHA 哈希、UUID、随机密码 |
-| 网络 | HTTP 请求（桌面端走原生网络，无 CORS） |
+| 编码/转换 | JSON 格式化、JSON 对比、Base64、URL 编解码、HTML 实体、进制转换、JWT 解析、单位换算、YAML ⇄ JSON、CSV ⇄ JSON |
+| 时间 | 时间戳、日期计算 |
+| 文本 | 正则测试、文本 Diff、文本统计、命名转换、Markdown 预览 |
+| 生成/哈希 | 哈希计算、UUID、密码生成、二维码生成、随机决策、颜色工具 |
 
-其他：全局搜索（Ctrl+K）、亮暗主题、剪贴板/文件打开保存（桌面端原生对话框）。
+其他：全局搜索（Ctrl+K）、亮暗主题、剪贴板/文件打开保存（桌面端原生对话框）。界面文案以中文为主，专有名词均附中文解释。
 
 ## 环境要求
 
@@ -55,6 +55,6 @@ neutralino.config.json
 
 ## 约定
 
-- 全部业务代码为 TypeScript（strict）
-- 纯逻辑与 UI 分离，单测只测 `*.core.ts` / 导出纯函数
+- 纯逻辑与 UI 分离，单测只测 core 导出的纯函数
+- 界面文案用中文，英文专有名词需附中文名称或解释
 - 无 Webhook / 无云同步 / 无账号

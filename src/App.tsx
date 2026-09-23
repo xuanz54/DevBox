@@ -10,7 +10,7 @@ import {
 import { toolComponents } from './tools/components';
 import { useThemeStore } from './stores/theme';
 
-const categoryOrder: ToolCategory[] = ['encode', 'time', 'text', 'gen', 'net'];
+const categoryOrder: ToolCategory[] = ['encode', 'time', 'text', 'gen'];
 
 function Placeholder({ title, desc }: { title: string; desc: string }) {
   return (

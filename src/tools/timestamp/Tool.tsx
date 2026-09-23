@@ -40,7 +40,7 @@ export default function TimestampTool() {
   return (
     <ToolPage
       title="时间戳"
-      desc="Unix 秒/毫秒 ↔ 本地时间，自动识别精度"
+      desc="Unix 时间戳（从 1970-01-01 00:00:00 UTC 起经过的秒数或毫秒数）与日期互转，自动识别是秒还是毫秒"
       actions={
         <>
           <button

@@ -24,7 +24,7 @@ export default function UrlTool() {
   return (
     <ToolPage
       title="URL 编解码"
-      desc="encodeURIComponent / 查询串解析"
+      desc="网址编解码：把中文、空格等特殊字符转成 %XX 形式（encodeURIComponent，即对网址中的字符进行转义编码），或还原回来；并可解析查询串（网址 ? 后面的 name=value 键值对)"
       actions={
         <>
           <div className="flex overflow-hidden rounded-md border border-black/10 text-xs dark:border-white/10">

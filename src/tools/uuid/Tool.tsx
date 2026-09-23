@@ -41,7 +41,7 @@ export default function UuidTool() {
   return (
     <ToolPage
       title="UUID 生成"
-      desc="批量 UUID v4（crypto.getRandomValues）"
+      desc="UUID（通用唯一识别码，一串几乎不会重复的 36 位标识符）v4 随机版本批量生成，用浏览器加密随机数（crypto.getRandomValues），完全本地"
       actions={
         <>
           <CopyButton text={display.join('\n')} label="复制全部" />

@@ -33,13 +33,13 @@ export function convertCase(input: string, style: CaseStyle): string {
   }
 }
 
-const styles: { id: CaseStyle; label: string }[] = [
-  { id: 'camel', label: 'camelCase' },
-  { id: 'pascal', label: 'PascalCase' },
-  { id: 'snake', label: 'snake_case' },
-  { id: 'kebab', label: 'kebab-case' },
-  { id: 'constant', label: 'CONSTANT_CASE' },
-  { id: 'title', label: 'Title Case' },
+const styles: { id: CaseStyle; label: string; hint: string }[] = [
+  { id: 'camel', label: '小驼峰（camelCase）', hint: '首个单词小写，其后单词首字母大写，如 userName；变量常用' },
+  { id: 'pascal', label: '大驼峰（PascalCase）', hint: '每个单词首字母都大写，如 UserName；类名常用' },
+  { id: 'snake', label: '下划线（snake_case）', hint: '单词全部小写，用下划线连接，如 user_name；Python / 数据库字段常用' },
+  { id: 'kebab', label: '中划线（kebab-case）', hint: '单词全部小写，用中划线连接，如 user-name；URL、CSS 类名常用' },
+  { id: 'constant', label: '常量（CONSTANT_CASE）', hint: '单词全部大写，用下划线连接，如 USER_NAME；常量定义常用' },
+  { id: 'title', label: '标题（Title Case）', hint: '每个单词首字母大写，单词间留空格，如 User Name；标题、文档常用' },
 ];
 
 export default function CaseTool() {
@@ -54,7 +54,7 @@ export default function CaseTool() {
   return (
     <ToolPage
       title="命名转换"
-      desc="camel / Pascal / snake / kebab / CONSTANT / Title"
+      desc="代码命名风格互转：小驼峰 / 大驼峰 / 下划线 / 中划线 / 常量 / 标题"
       actions={<CopyButton text={active?.value ?? ''} />}
     >
       <ErrorBanner message="" />
@@ -72,7 +72,10 @@ export default function CaseTool() {
             }`}
             onClick={() => setStyle(o.id)}
           >
-            <span className="text-xs font-medium opacity-60">{o.label}</span>
+            <div className="min-w-0">
+              <span className="block text-xs font-medium">{o.label}</span>
+              <span className="mt-0.5 block truncate text-[11px] opacity-50">{o.hint}</span>
+            </div>
             <div className="flex items-center gap-2">
               <code className="font-mono text-sm">{o.value || '—'}</code>
               <button

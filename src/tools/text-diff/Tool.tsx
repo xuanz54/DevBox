@@ -15,7 +15,7 @@ export default function TextDiffTool() {
   return (
     <ToolPage
       title="文本 Diff"
-      desc="行级差异对比（LCS）"
+      desc="两段文本逐行找差异（LCS，最长公共子序列算法），绿色为新增、红色为删除"
       actions={
         <>
           <span className="text-xs">
