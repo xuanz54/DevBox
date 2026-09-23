@@ -2,6 +2,14 @@
 
 本地优先的开发者工具箱（桌面绿色单文件 exe）。基于 **Neutralino.js + React + Vite + Tailwind CSS**，所有数据本地处理，无需联网。
 
+## 直接使用
+
+从 [GitHub Releases](https://github.com/xuanz54/DevBox/releases) 下载 `DevBox-win_x64.exe`，双击运行。
+
+- **系统要求**：Windows 10/11 **x64**；需 WebView2 运行时（Win11 自带，部分 Win10 需安装一次）
+- 免安装、单文件；不依赖 Node.js 或源码
+- 仓库内 `dist/` 不提交 exe，**请通过 Release 获取**
+
 ## 功能（23）
 
 | 分类 | 工具 |
@@ -13,33 +21,104 @@
 
 其他：全局搜索（Ctrl+K）、亮暗主题、剪贴板/文件打开保存（桌面端原生对话框）。界面文案以中文为主，专有名词均附中文解释。
 
-## 环境要求
+## 环境要求（开发）
 
 - Node.js 20+
-- Neutralino CLI：`npm i -g @neutralinojs/neu`
-- Windows 上需 WebView2 运行时（Win11 通常自带）
+- Neutralino CLI：`npm i -g @neutralinojs/neu`（或 `npx @neutralinojs/neu`）
+- Windows 上需 WebView2 运行时
 
-## 开发
+## 从克隆到跑起来
 
 ```bash
+git clone https://github.com/xuanz54/DevBox.git
+cd DevBox
 npm install
-npm run dev          # 仅浏览器调试 UI
-npm run typecheck
-npm test
-neu run              # 桌面窗口 + Vite HMR
+npm run dev        # 浏览器调试 UI（不加载原生 API）
+neu run            # 桌面窗口 + Vite HMR（首次会下载 bin/ 运行时）
 ```
+
+说明：`/bin` 与 `/dist` 不在 Git 中；`neu run` 首次会自动拉取对应平台二进制。
+
+### 日常命令
+
+```bash
+npm run typecheck  # tsc --noEmit
+npm test           # vitest（仅测 core 纯函数）
+npm run build      # 前端产物写入 resources/
+neu run            # 开发窗口
+```
+
+## 添加自定义工具
+
+以 `base64` 为模板，三步完成注册（**不必改** `App.tsx` 路由）：
+
+1. **`src/tools/<id>/core.ts`** — 纯逻辑，返回 `Result`（`src/lib/result.ts` 的 `ok` / `err`）
+2. **`src/tools/<id>/Tool.tsx`** — `export default` 组件，用 `src/components/ui.tsx` 的 `ToolPage`、`Pane`、`btn` 等
+3. （推荐）**`src/tools/<id>/core.test.ts`** — vitest 测 `core` 导出的纯函数
+
+注册两处：
+
+```ts
+// src/tools/registry.ts → tools 数组追加
+{
+  id: 'my-tool',
+  path: '/my-tool',
+  name: '我的工具',
+  desc: '一句话说明',
+  category: 'encode', // encode | time | text | gen
+  keywords: ['my', '工具'],
+}
+
+// src/tools/components.ts → import + toolComponents
+'my-tool': MyTool,
+```
+
+首页卡片、侧边栏、Ctrl+K 搜索会随 `registry` 自动出现；未挂组件时路由显示占位页。
+
+## 其他定制
+
+| 项 | 位置 |
+|---|---|
+| 应用图标 / 任务栏 | `resources/icons/appIcon.png`、`resources/favicon.ico`、`src/icons/logo.png` |
+| 窗口尺寸 / 标题 | `neutralino.config.json` → `modes.window` |
+| 原生 API 白名单 | `neutralino.config.json` → `nativeAllowList` |
+| 主题 | `src/stores/theme.ts` |
+| Windows 文件属性 | 根节点 `applicationName` / `description` / `author` / `copyright` / `applicationIcon` |
 
 ## 打包绿色 exe
 
 ```bash
-npm run build
+# 打包前先结束已运行的 DevBox-win_x64，避免文件占用
 neu build --embed-resources --release
 ```
 
-产物在 `dist/`：
+产物：`dist/DevBox/DevBox-win_x64.exe`（资源已内嵌，单文件）。  
+`/dist` 已在 `.gitignore`，**不要**把 exe 提交进仓库。
 
-- `DevBox-win_x64.exe`（**单文件、免安装**，资源已内嵌）
-- 对应平台二进制 + `resources.neu`（若未 embed 则为分离资源）
+## 发布 GitHub Release
+
+用户侧只认 Release 下载（见上文「直接使用」）。
+
+**网页（推荐首次）：**
+
+1. 打开仓库 → **Releases** → **Create a new release**
+2. **Tag**：`v1.0.0`（与 `package.json` / config 的 `version` 一致；Target 选 `main`）
+3. **Release title**：如 `v1.0.0`
+4. **Release notes**：写清改动；可点 Generate release notes
+5. 把 `dist/DevBox/DevBox-win_x64.exe` 拖到附件区
+6. Publish release
+
+**命令行（可选）：**
+
+```bash
+git tag v1.0.0
+git push origin v1.0.0
+gh release create v1.0.0 dist/DevBox/DevBox-win_x64.exe \
+  --title "v1.0.0" \
+  --notes "首个正式版本"
+```
+
+每次发新版本：改 `version` → 打包 → 新 tag → 新 Release 上传 exe。
 
 ## 目录结构
 
@@ -57,4 +136,4 @@ neutralino.config.json
 
 - 纯逻辑与 UI 分离，单测只测 core 导出的纯函数
 - 界面文案用中文，英文专有名词需附中文名称或解释
-- 无 Webhook / 无云同步 / 无账号
+- 无 Webhook / 无云同步 / 无账号；数据全在本地
