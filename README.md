@@ -10,6 +10,50 @@
 - 免安装、单文件；不依赖 Node.js 或源码
 - 仓库内 `dist/` 不提交 exe，**请通过 Release 获取**
 
+## 界面预览
+
+### 首页（亮色）
+
+![DevBox 首页（亮色）](docs/screenshots/home.png)
+
+打开即见全部工具：左侧按分类导航，右侧为卡片入口；顶部搜索框支持 **Ctrl+K** 全局搜索，右上角可切换亮/暗主题。
+
+### 首页（暗色）
+
+![DevBox 首页（暗色）](docs/screenshots/home-dark.png)
+
+同一套导航与卡片，一键切换暗色主题，适合夜间使用。
+
+### JSON 格式化
+
+![JSON 格式化](docs/screenshots/json-format.png)
+
+左栏粘贴原始 JSON，右栏实时美化/压缩结果；可校验格式、调整缩进，并一键复制或保存输出。
+
+### Markdown 预览
+
+![Markdown 预览](docs/screenshots/markdown-preview.png)
+
+左边写 Markdown 源文，右边实时渲染为网页效果；支持标题、列表、代码块、表格等，可一键复制生成的 HTML。
+
+### 时间戳
+
+![时间戳](docs/screenshots/timestamp.png)
+
+Unix 时间戳（秒/毫秒）与日期互转：展示当前时间戳，支持时间戳→本地/UTC/ISO、日期→时间戳，并自动识别秒或毫秒。
+
+### 二维码生成
+
+![二维码生成](docs/screenshots/qrcode.png)
+
+文本或链接本地生成二维码：可调尺寸、容错级别、前景/背景色，预览后一键保存 PNG。
+
+### 随机决策
+
+![随机决策](docs/screenshots/random-decision.png)
+
+每行一个选项（或逗号分隔），支持「抽取一次」与「打乱顺序」；使用加密安全随机数，并记录抽取历史。
+
 ## 功能（23）
 
 | 分类 | 工具 |
@@ -129,6 +173,7 @@ src/
   stores/         # zustand（主题）
   tools/          # 每个工具：core.ts（纯逻辑+可测）+ Tool.tsx（UI）
 resources/        # Neutralino 资源（Vite 构建输出 + 图标 + client）
+docs/screenshots/ # README 用应用截图
 neutralino.config.json
 ```
 
