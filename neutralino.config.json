@@ -47,7 +47,8 @@
       "resizable": true,
       "exitProcessOnClose": true,
       "injectGlobals": true,
-      "injectClientLibrary": false
+      "injectClientLibrary": false,
+      "newWindowPolicy": "browser"
     },
     "browser": {
       "nativeBlockList": ["*"]

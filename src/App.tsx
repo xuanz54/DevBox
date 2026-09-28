@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { os } from '@neutralinojs/lib';
 import { NavLink, Route, Routes } from 'react-router-dom';
 import {
   categoryLabels,
@@ -235,6 +236,29 @@ export default function App() {
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, [query, collapsed]);
+
+  useEffect(() => {
+    const openExternal = (e: MouseEvent) => {
+      if (e.type === 'click' && e.button !== 0) return;
+      if (e.type === 'auxclick' && e.button !== 1) return;
+      const anchor = (e.target as Element | null)?.closest?.('a');
+      if (!anchor) return;
+      const href = anchor.getAttribute('href');
+      if (!href || !/^(https?:|mailto:)/i.test(href)) return;
+      e.preventDefault();
+      if (typeof window.NL_APPID === 'string') {
+        void os.open(href).catch(() => {});
+      } else {
+        window.open(href, '_blank');
+      }
+    };
+    window.addEventListener('click', openExternal, true);
+    window.addEventListener('auxclick', openExternal, true);
+    return () => {
+      window.removeEventListener('click', openExternal, true);
+      window.removeEventListener('auxclick', openExternal, true);
+    };
+  }, []);
 
   return (
     <div className="flex h-full">
