@@ -68,9 +68,13 @@ function ToolRoutes() {
 function Sidebar({
   query,
   setQuery,
+  collapsed,
+  onToggle,
 }: {
   query: string;
   setQuery: (v: string) => void;
+  collapsed: boolean;
+  onToggle: () => void;
 }) {
   const filtered = searchTools(query);
   const grouped = categoryOrder
@@ -78,67 +82,80 @@ function Sidebar({
     .filter((g) => g.items.length > 0);
 
   return (
-    <aside className="flex w-60 shrink-0 flex-col border-r border-black/10 bg-white/60 dark:border-white/10 dark:bg-black/20">
-      <div className="flex items-center gap-2 px-4 pt-4 pb-2">
-        <img
-          src={logo}
-          alt="DevBox"
-          className="h-8 w-8 rounded-lg object-cover"
-        />
-        <div>
-          <div className="text-sm font-semibold leading-none">DevBox</div>
-          <div className="mt-0.5 text-[10px] opacity-50">Developer Toolbox</div>
-        </div>
-      </div>
-      <div className="px-3 pb-2">
-        <input
-          id="tool-search"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="搜索工具… (Ctrl+K)"
-          className="w-full rounded-lg border border-black/10 bg-black/5 px-3 py-1.5 text-sm outline-none placeholder:opacity-40 focus:border-indigo-400 dark:border-white/10 dark:bg-white/5"
-        />
-      </div>
-      <nav className="flex-1 overflow-y-auto px-2 pb-4">
-        <NavLink
-          to="/"
-          end
-          className={({ isActive }) =>
-            `mb-1 block rounded-lg px-3 py-2 text-sm transition ${
-              isActive
-                ? 'bg-indigo-500/15 text-indigo-600 dark:text-indigo-300'
-                : 'opacity-70 hover:bg-black/5 dark:hover:bg-white/5'
-            }`
-          }
-        >
-          首页
-        </NavLink>
-        {grouped.map(({ cat, items }) => (
-          <div key={cat} className="mt-3">
-            <div className="px-3 pb-1 text-[11px] font-medium uppercase tracking-wide opacity-40">
-              {categoryLabels[cat]}
-            </div>
-            {items.map((t) => (
-              <NavLink
-                key={t.id}
-                to={t.path}
-                className={({ isActive }) =>
-                  `mb-0.5 block rounded-lg px-3 py-1.5 text-sm transition ${
-                    isActive
-                      ? 'bg-indigo-500/15 font-medium text-indigo-600 dark:text-indigo-300'
-                      : 'opacity-70 hover:bg-black/5 dark:hover:bg-white/5'
-                  }`
-                }
-              >
-                {t.name}
-              </NavLink>
-            ))}
+    <aside
+      className={`flex shrink-0 flex-col overflow-hidden bg-white/60 transition-[width] duration-200 ease-out dark:bg-black/20 ${
+        collapsed
+          ? 'w-0'
+          : 'w-60 border-r border-black/10 dark:border-white/10'
+      }`}
+    >
+      <div className="flex min-h-0 w-60 flex-1 flex-col">
+        <div className="flex items-center gap-2 px-4 pt-4 pb-2">
+          <img
+            src={logo}
+            alt="DevBox"
+            className="h-8 w-8 rounded-lg object-cover"
+          />
+          <div>
+            <div className="text-sm font-semibold leading-none">DevBox</div>
+            <div className="mt-0.5 text-[10px] opacity-50">Developer Toolbox</div>
           </div>
-        ))}
-        {grouped.length === 0 && (
-          <div className="px-3 py-6 text-center text-xs opacity-40">无匹配工具</div>
-        )}
-      </nav>
+          <SidebarToggle
+            collapsed={collapsed}
+            onToggle={onToggle}
+            className="ml-auto"
+          />
+        </div>
+        <div className="px-3 pb-2">
+          <input
+            id="tool-search"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="搜索工具… (Ctrl+K)"
+            className="w-full rounded-lg border border-black/10 bg-black/5 px-3 py-1.5 text-sm outline-none placeholder:opacity-40 focus:border-indigo-400 dark:border-white/10 dark:bg-white/5"
+          />
+        </div>
+        <nav className="flex-1 overflow-y-auto px-2 pb-4">
+          <NavLink
+            to="/"
+            end
+            className={({ isActive }) =>
+              `mb-1 block rounded-lg px-3 py-2 text-sm transition ${
+                isActive
+                  ? 'bg-indigo-500/15 text-indigo-600 dark:text-indigo-300'
+                  : 'opacity-70 hover:bg-black/5 dark:hover:bg-white/5'
+              }`
+            }
+          >
+            首页
+          </NavLink>
+          {grouped.map(({ cat, items }) => (
+            <div key={cat} className="mt-3">
+              <div className="px-3 pb-1 text-[11px] font-medium uppercase tracking-wide opacity-40">
+                {categoryLabels[cat]}
+              </div>
+              {items.map((t) => (
+                <NavLink
+                  key={t.id}
+                  to={t.path}
+                  className={({ isActive }) =>
+                    `mb-0.5 block rounded-lg px-3 py-1.5 text-sm transition ${
+                      isActive
+                        ? 'bg-indigo-500/15 font-medium text-indigo-600 dark:text-indigo-300'
+                        : 'opacity-70 hover:bg-black/5 dark:hover:bg-white/5'
+                    }`
+                  }
+                >
+                  {t.name}
+                </NavLink>
+              ))}
+            </div>
+          ))}
+          {grouped.length === 0 && (
+            <div className="px-3 py-6 text-center text-xs opacity-40">无匹配工具</div>
+          )}
+        </nav>
+      </div>
     </aside>
   );
 }
@@ -158,14 +175,58 @@ function ThemeToggle() {
   );
 }
 
+function SidebarToggle({
+  collapsed,
+  onToggle,
+  className = '',
+}: {
+  collapsed: boolean;
+  onToggle: () => void;
+  className?: string;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onToggle}
+      title={collapsed ? '展开侧栏' : '收起侧栏'}
+      className={`shrink-0 rounded-lg border border-black/10 bg-white/70 p-1 opacity-70 hover:opacity-100 dark:border-white/10 dark:bg-white/10 ${className}`}
+    >
+      <svg
+        viewBox="0 0 16 16"
+        className="h-3.5 w-3.5"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden="true"
+      >
+        {collapsed ? (
+          <path d="M6.5 3.5 11 8l-4.5 4.5" />
+        ) : (
+          <path d="M9.5 3.5 5 8l4.5 4.5" />
+        )}
+      </svg>
+    </button>
+  );
+}
+
 export default function App() {
   const [query, setQuery] = useState('');
+  const [collapsed, setCollapsed] = useState(false);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
         e.preventDefault();
-        document.getElementById('tool-search')?.focus();
+        if (collapsed) {
+          setCollapsed(false);
+          requestAnimationFrame(() => {
+            document.getElementById('tool-search')?.focus();
+          });
+        } else {
+          document.getElementById('tool-search')?.focus();
+        }
       }
       if (e.key === 'Escape' && query) {
         setQuery('');
@@ -173,15 +234,25 @@ export default function App() {
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [query]);
+  }, [query, collapsed]);
 
   return (
     <div className="flex h-full">
-      <Sidebar query={query} setQuery={setQuery} />
+      <Sidebar
+        query={query}
+        setQuery={setQuery}
+        collapsed={collapsed}
+        onToggle={() => setCollapsed((c) => !c)}
+      />
       <main className="relative min-w-0 flex-1 bg-[#f4f5f7] dark:bg-[#0c0d10]">
         <div className="absolute right-4 top-4 z-10">
           <ThemeToggle />
         </div>
+        {collapsed && (
+          <div className="absolute left-4 top-4 z-10">
+            <SidebarToggle collapsed onToggle={() => setCollapsed(false)} />
+          </div>
+        )}
         <div className="h-full pt-10">
           <ToolRoutes />
         </div>
