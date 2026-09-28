@@ -10,6 +10,7 @@ import {
 } from './tools/registry';
 import { toolComponents } from './tools/components';
 import { useThemeStore } from './stores/theme';
+import Settings from './pages/Settings';
 import logo from './icons/logo.png';
 
 const categoryOrder: ToolCategory[] = ['encode', 'time', 'text', 'gen'];
@@ -60,8 +61,9 @@ function ToolRoutes() {
             element={Comp ? <Comp /> : <Placeholder title={t.name} desc={t.desc} />}
           />
         );
-      })}
-      <Route path="*" element={<Home />} />
+        })}
+        <Route path="settings" element={<Settings />} />
+        <Route path="*" element={<Home />} />
     </Routes>
   );
 }
@@ -156,13 +158,27 @@ function Sidebar({
             <div className="px-3 py-6 text-center text-xs opacity-40">无匹配工具</div>
           )}
         </nav>
+        <div className="shrink-0 border-t border-black/10 px-2 py-2 dark:border-white/10">
+          <NavLink
+            to="/settings"
+            className={({ isActive }) =>
+              `block rounded-lg px-3 py-1.5 text-sm transition ${
+                isActive
+                  ? 'bg-indigo-500/15 font-medium text-indigo-600 dark:text-indigo-300'
+                  : 'opacity-70 hover:bg-black/5 dark:hover:bg-white/5'
+              }`
+            }
+          >
+            ⚙️ 设置
+          </NavLink>
+        </div>
       </div>
     </aside>
   );
 }
 
 function ThemeToggle() {
-  const theme = useThemeStore((s) => s.theme);
+  const resolved = useThemeStore((s) => s.resolved);
   const toggle = useThemeStore((s) => s.toggle);
   return (
     <button
@@ -171,7 +187,7 @@ function ThemeToggle() {
       title="切换主题"
       className="rounded-lg border border-black/10 bg-white/70 px-2.5 py-1 text-xs opacity-70 hover:opacity-100 dark:border-white/10 dark:bg-white/10"
     >
-      {theme === 'dark' ? '☀️' : '🌙'}
+      {resolved === 'dark' ? '☀️' : '🌙'}
     </button>
   );
 }
