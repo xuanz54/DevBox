@@ -16,7 +16,7 @@
 
 ![DevBox 首页（亮色）](docs/screenshots/home.png)
 
-打开即见全部工具：左侧按分类导航，右侧为卡片入口；顶部搜索框支持 **Ctrl+K** 全局搜索，右上角可切换亮/暗主题。
+打开即见全部工具：左侧按分类导航（点 « 可折叠侧栏），右侧为卡片入口；顶部搜索框支持 **Ctrl+K** 全局搜索，右上角可快速切换亮/暗主题。
 
 ### 首页（暗色）
 
@@ -54,6 +54,12 @@ Unix 时间戳（秒/毫秒）与日期互转：展示当前时间戳，支持�
 
 每行一个选项（或逗号分隔），支持「抽取一次」与「打乱顺序」；使用加密安全随机数，并记录抽取历史。
 
+### 设置
+
+![设置](docs/screenshots/settings.png)
+
+侧栏底部进入设置页：主题支持「跟随系统 / 浅色 / 深色」三态切换；关于区展示应用版本、GitHub 仓库链接（用系统默认浏览器打开）与运行环境信息。
+
 ## 功能（23）
 
 | 分类 | 工具 |
@@ -63,7 +69,7 @@ Unix 时间戳（秒/毫秒）与日期互转：展示当前时间戳，支持�
 | 文本 | 正则测试、文本 Diff、文本统计、命名转换、Markdown 预览 |
 | 生成/哈希 | 哈希计算、UUID、密码生成、二维码生成、随机决策、颜色工具 |
 
-其他：全局搜索（Ctrl+K）、亮暗主题、剪贴板/文件打开保存（桌面端原生对话框）。界面文案以中文为主，专有名词均附中文解释。
+其他：全局搜索（Ctrl+K）、主题三态（跟随系统/浅色/深色）、可折叠侧栏、设置页、外链用系统默认浏览器打开、剪贴板/文件打开保存（桌面端原生对话框）。界面文案以中文为主，专有名词均附中文解释。
 
 ## 环境要求（开发）
 
@@ -136,7 +142,7 @@ neu run            # 开发窗口
 neu build --embed-resources --release
 ```
 
-产物：`dist/DevBox/DevBox-win_x64.exe`（资源已内嵌，单文件）。  
+产物：`dist/DevBox/DevBox-win_x64.exe`（资源已内嵌，单文件）。构建脚本会先自动清空 `resources/assets` 旧产物，避免历史文件堆积。  
 `/dist` 已在 `.gitignore`，**不要**把 exe 提交进仓库。
 
 ## 发布 GitHub Release
@@ -146,8 +152,8 @@ neu build --embed-resources --release
 **网页（推荐首次）：**
 
 1. 打开仓库 → **Releases** → **Create a new release**
-2. **Tag**：`v1.0.0`（与 `package.json` / config 的 `version` 一致；Target 选 `main`）
-3. **Release title**：如 `v1.0.0`
+2. **Tag**：`v1.1.0`（与 `package.json` / config 的 `version` 一致；Target 选 `main`）
+3. **Release title**：如 `v1.1.0`
 4. **Release notes**：写清改动；可点 Generate release notes
 5. 把 `dist/DevBox/DevBox-win_x64.exe` 拖到附件区
 6. Publish release
@@ -155,11 +161,11 @@ neu build --embed-resources --release
 **命令行（可选）：**
 
 ```bash
-git tag v1.0.0
-git push origin v1.0.0
-gh release create v1.0.0 dist/DevBox/DevBox-win_x64.exe \
-  --title "v1.0.0" \
-  --notes "首个正式版本"
+git tag v1.1.0
+git push origin v1.1.0
+gh release create v1.1.0 dist/DevBox/DevBox-win_x64.exe \
+  --title "v1.1.0" \
+  --notes "新增设置页与主题三态；侧栏可折叠；外链用系统默认浏览器打开"
 ```
 
 每次发新版本：改 `version` → 打包 → 新 tag → 新 Release 上传 exe。
