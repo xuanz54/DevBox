@@ -15,6 +15,7 @@ import HashTool from './hash/Tool';
 import UuidTool from './uuid/Tool';
 import PasswordTool from './password/Tool';
 import UnitTool from './unit/Tool';
+import ExchangeTool from './exchange/Tool';
 import YamlTool from './yaml/Tool';
 import CsvTool from './csv/Tool';
 import DateTool from './date/Tool';
@@ -40,6 +41,7 @@ export const toolComponents: Record<string, ComponentType> = {
   uuid: UuidTool,
   password: PasswordTool,
   unit: UnitTool,
+  exchange: ExchangeTool,
   yaml: YamlTool,
   csv: CsvTool,
   date: DateTool,

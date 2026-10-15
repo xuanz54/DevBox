@@ -146,6 +146,14 @@ export const tools: ToolDef[] = [
     keywords: ['unit', '单位', '换算', 'convert', 'length', 'weight', '温度', '长度'],
   },
   {
+    id: 'exchange',
+    path: '/exchange',
+    name: '汇率换算',
+    desc: '实时汇率换算，联网刷新，缓存后离线可用',
+    category: 'encode',
+    keywords: ['exchange', 'fx', 'currency', '汇率', '换算', '货币', '人民币', '美元'],
+  },
+  {
     id: 'yaml',
     path: '/yaml',
     name: 'YAML ⇄ JSON',
