@@ -79,14 +79,14 @@ export default function DateTool() {
             type="datetime-local"
             value={dateA}
             onChange={(e) => setDateA(e.target.value)}
-            className="rounded-md border border-black/10 bg-transparent px-2 py-1.5 outline-none dark:border-white/10"
+            className="input input-sm"
           />
           <span className="opacity-50">→</span>
           <input
             type="datetime-local"
             value={dateB}
             onChange={(e) => setDateB(e.target.value)}
-            className="rounded-md border border-black/10 bg-transparent px-2 py-1.5 outline-none dark:border-white/10"
+            className="input input-sm"
           />
           <button
             type="button"
@@ -123,7 +123,7 @@ export default function DateTool() {
             type="date"
             value={baseDate}
             onChange={(e) => setBaseDate(e.target.value)}
-            className="rounded-md border border-black/10 bg-transparent px-2 py-1.5 outline-none dark:border-white/10"
+            className="input input-sm"
           />
           <div className="flex flex-wrap gap-1.5">
             <button type="button" className={btn()} onClick={() => addDays(-1, 'day')}>
@@ -159,7 +159,7 @@ export default function DateTool() {
             type="date"
             value={countdownTarget}
             onChange={(e) => setCountdownTarget(e.target.value)}
-            className="rounded-md border border-black/10 bg-transparent px-2 py-1.5 outline-none dark:border-white/10"
+            className="input input-sm"
           />
           {parsedTarget.ok && countdown ? (
             <span className="font-mono text-sm">

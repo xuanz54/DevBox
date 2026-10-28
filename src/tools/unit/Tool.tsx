@@ -92,7 +92,7 @@ export default function UnitTool() {
           <select
             value={catKey}
             onChange={(e) => changeCategory(e.target.value)}
-            className="rounded-md border border-black/10 bg-white px-2 py-2 dark:border-white/10 dark:bg-white/5"
+            className="input"
           >
             {unitCategories.map((x) => (
               <option key={x.key} value={x.key}>
@@ -107,7 +107,7 @@ export default function UnitTool() {
             value={valueStr}
             onChange={(e) => setValueStr(e.target.value)}
             inputMode="decimal"
-            className="w-32 rounded-md border border-black/10 bg-transparent px-3 py-2 font-mono outline-none focus:border-indigo-400 dark:border-white/10"
+            className="input w-32 font-mono"
             placeholder="1"
           />
         </label>
@@ -116,7 +116,7 @@ export default function UnitTool() {
           <select
             value={fromKey}
             onChange={(e) => setFromKey(e.target.value)}
-            className="rounded-md border border-black/10 bg-white px-2 py-2 dark:border-white/10 dark:bg-white/5"
+            className="input"
           >
             {cat?.units.map((u) => (
               <option key={u.key} value={u.key}>
@@ -130,7 +130,7 @@ export default function UnitTool() {
           <select
             value={toKey}
             onChange={(e) => setToKey(e.target.value)}
-            className="rounded-md border border-black/10 bg-white px-2 py-2 dark:border-white/10 dark:bg-white/5"
+            className="input"
           >
             {cat?.units.map((u) => (
               <option key={u.key} value={u.key}>
@@ -141,7 +141,7 @@ export default function UnitTool() {
         </label>
       </div>
 
-      <div className="rounded-xl border border-black/10 bg-white p-6 text-center dark:border-white/10 dark:bg-white/5">
+      <div className="panel p-6 text-center">
         <div className="text-xs opacity-50">结果</div>
         <div className="mt-2 break-all font-mono text-3xl font-semibold">
           {valueStr.trim() ? `${valueStr} ${from?.symbol ?? ''} = ` : ''}

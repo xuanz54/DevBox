@@ -6,7 +6,7 @@
   "description": "DevBox 开发者工具箱",
   "copyright": "Copyright © 2026 xuanz54. All rights reserved.",
   "applicationIcon": "resources/icons/appIcon.png",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "defaultMode": "window",
   "port": 0,
   "documentRoot": "/resources/",
@@ -31,10 +31,10 @@
   "modes": {
     "window": {
       "title": "DevBox",
-      "width": 1180,
-      "height": 760,
-      "minWidth": 880,
-      "minHeight": 580,
+      "width": 1360,
+      "height": 860,
+      "minWidth": 900,
+      "minHeight": 600,
       "center": true,
       "fullScreen": false,
       "alwaysOnTop": false,

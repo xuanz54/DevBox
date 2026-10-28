@@ -41,7 +41,7 @@ export default function RadixTool() {
         <select
           value={from}
           onChange={(e) => setFrom(Number(e.target.value) as Radix)}
-          className="rounded-md border border-black/10 bg-white px-2 py-1 text-sm dark:border-white/10 dark:bg-white/5"
+          className="input input-sm"
         >
           {radices.map((r) => (
             <option key={r} value={r}>
@@ -56,7 +56,7 @@ export default function RadixTool() {
         <select
           value={to}
           onChange={(e) => setTo(Number(e.target.value) as Radix)}
-          className="rounded-md border border-black/10 bg-white px-2 py-1 text-sm dark:border-white/10 dark:bg-white/5"
+          className="input input-sm"
         >
           {radices.map((r) => (
             <option key={r} value={r}>
@@ -65,7 +65,7 @@ export default function RadixTool() {
           ))}
         </select>
       </div>
-      <div className="grid h-full min-h-0 grid-cols-2 gap-4">
+      <div className="grid min-h-0 flex-1 grid-cols-2 gap-4">
         <Pane label={`输入（${from} 进制）`} className="min-h-48">
           <TextArea value={input} onChange={setInput} />
         </Pane>

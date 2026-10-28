@@ -1,4 +1,5 @@
-import { useCallback, useState, type ReactNode } from 'react';
+import { useCallback, useEffect, useState, type ReactNode } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { clipboard, filesystem, os } from '@neutralinojs/lib';
 
 function isNative(): boolean {
@@ -152,7 +153,7 @@ export function CopyButton({ text, label = '复制' }: { text: string; label?: s
       type="button"
       onClick={onClick}
       disabled={!text}
-      className="rounded-md border border-black/10 bg-white px-2.5 py-1 text-xs hover:border-indigo-400 disabled:opacity-40 dark:border-white/10 dark:bg-white/5"
+      className="btn btn-sm"
     >
       {state === 'ok' ? '已复制' : state === 'fail' ? '失败' : label}
     </button>
@@ -170,27 +171,57 @@ export function ToolPage({
   actions?: ReactNode;
   children: ReactNode;
 }) {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape') return;
+      const t = e.target as HTMLElement | null;
+      if (t && ['INPUT', 'TEXTAREA', 'SELECT'].includes(t.tagName)) return;
+      navigate('/');
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [navigate]);
+
   return (
-    <div className="flex h-full flex-col">
-      <header className="flex shrink-0 items-start justify-between gap-4 border-b border-black/10 px-6 py-4 dark:border-white/10">
-        <div>
-          <h1 className="text-lg font-semibold tracking-tight">{title}</h1>
-          <p className="mt-0.5 text-xs opacity-60">{desc}</p>
+    <div className="tool-page">
+      <header className="tool-head">
+        <button
+          type="button"
+          className="back-btn"
+          onClick={() => navigate('/')}
+          title="返回首页 (Esc)"
+          aria-label="返回首页"
+        >
+          <svg
+            width="15"
+            height="15"
+            viewBox="0 0 16 16"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M9.5 3.5 5 8l4.5 4.5" />
+          </svg>
+        </button>
+        <div className="tool-heading">
+          <h1>{title}</h1>
+          <p>{desc}</p>
         </div>
-        {actions ? <div className="flex shrink-0 flex-wrap items-center gap-2">{actions}</div> : null}
+        {actions ? <div className="tool-actions">{actions}</div> : null}
       </header>
-      <div className="min-h-0 flex-1 overflow-auto p-6">{children}</div>
+      <div className="tool-body">{children}</div>
     </div>
   );
 }
 
 export function ErrorBanner({ message }: { message: string }) {
   if (!message) return null;
-  return (
-    <div className="mb-3 rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2 text-xs text-red-600 dark:text-red-300">
-      {message}
-    </div>
-  );
+  return <div className="notice notice-error">{message}</div>;
 }
 
 export function Pane({
@@ -203,13 +234,11 @@ export function Pane({
   className?: string;
 }) {
   return (
-    <div
-      className={`flex min-h-0 flex-col overflow-hidden rounded-xl border border-black/10 bg-white dark:border-white/10 dark:bg-white/5 ${className}`}
-    >
-      <div className="flex items-center justify-between border-b border-black/10 px-3 py-1.5 text-[11px] font-medium uppercase tracking-wide opacity-50 dark:border-white/10">
+    <div className={`pane ${className}`}>
+      <div className="pane-head">
         <span>{label}</span>
       </div>
-      <div className="flex min-h-0 flex-1 flex-col">{children}</div>
+      <div className="pane-body">{children}</div>
     </div>
   );
 }
@@ -237,15 +266,11 @@ export function TextArea({
       className={`h-full min-h-40 w-full flex-1 resize-none bg-transparent px-3 py-2 text-sm outline-none ${
         mono ? 'font-mono' : ''
       }`}
+      style={{ color: 'var(--ink)' }}
     />
   );
 }
 
 export function btn(primary = false): string {
-  return [
-    'rounded-md px-2.5 py-1 text-xs border transition',
-    primary
-      ? 'border-indigo-500 bg-indigo-500 text-white hover:bg-indigo-600'
-      : 'border-black/10 bg-white hover:border-indigo-400 dark:border-white/10 dark:bg-white/5',
-  ].join(' ');
+  return primary ? 'btn btn-primary' : 'btn';
 }

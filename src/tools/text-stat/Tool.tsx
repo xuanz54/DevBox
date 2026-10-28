@@ -73,12 +73,9 @@ export default function TextStatTool() {
     >
       <div className="mb-4 grid grid-cols-2 gap-2 md:grid-cols-4">
         {cards.map((c) => (
-          <div
-            key={c.label}
-            className="rounded-xl border border-black/10 bg-white p-3 dark:border-white/10 dark:bg-white/5"
-          >
-            <div className="text-[11px] opacity-50">{c.label}</div>
-            <div className="mt-1 font-mono text-xl font-semibold">{c.value}</div>
+          <div key={c.label} className="stat-card">
+            <div className="stat-label">{c.label}</div>
+            <div className="stat-num mono mt-1">{c.value}</div>
           </div>
         ))}
       </div>

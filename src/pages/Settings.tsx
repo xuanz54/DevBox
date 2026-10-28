@@ -17,8 +17,13 @@ function isNative(): boolean {
 
 function InfoRow({ label, children }: { label: string; children: ReactNode }) {
   return (
-    <div className="flex items-center justify-between gap-4 py-1.5 text-sm">
-      <span className="shrink-0 opacity-60">{label}</span>
+    <div
+      className="flex items-center justify-between gap-4 py-2 text-sm"
+      style={{ borderBottom: '1px solid var(--line)' }}
+    >
+      <span className="shrink-0 text-xs" style={{ color: 'var(--muted)' }}>
+        {label}
+      </span>
       <span className="min-w-0 truncate text-right">{children}</span>
     </div>
   );
@@ -32,11 +37,13 @@ export default function Settings() {
 
   return (
     <ToolPage title="设置" desc="外观与关于信息">
-      <div className="mx-auto flex max-w-2xl flex-col gap-4">
+      <div className="mx-auto flex max-w-3xl flex-col gap-4">
         <Pane label="外观">
           <div className="p-4">
-            <div className="text-sm font-medium">主题</div>
-            <p className="mt-0.5 text-xs opacity-60">
+            <div className="text-sm font-bold" style={{ color: 'var(--ink-strong)' }}>
+              主题
+            </div>
+            <p className="mt-1 text-xs" style={{ color: 'var(--muted)' }}>
               「跟随系统」会随操作系统的深浅色设置自动切换；右上角按钮可快速切换浅色 / 深色
             </p>
             <div className="mt-3 flex flex-wrap gap-2">
@@ -46,11 +53,7 @@ export default function Settings() {
                   type="button"
                   onClick={() => setTheme(o.value)}
                   title={o.desc}
-                  className={
-                    theme === o.value
-                      ? 'rounded-lg border border-indigo-500 bg-indigo-500/15 px-3 py-1.5 text-sm font-medium text-indigo-600 transition dark:text-indigo-300'
-                      : 'rounded-lg border border-black/10 bg-white px-3 py-1.5 text-sm transition hover:border-indigo-400 dark:border-white/10 dark:bg-white/5'
-                  }
+                  className={theme === o.value ? 'btn btn-primary' : 'btn'}
                 >
                   {o.label}
                 </button>
@@ -64,10 +67,7 @@ export default function Settings() {
             <InfoRow label="应用版本">{version}</InfoRow>
             <InfoRow label="GitHub 仓库">
               <span className="inline-flex min-w-0 items-center gap-2">
-                <a
-                  href={REPO_URL}
-                  className="truncate text-indigo-600 underline underline-offset-2 hover:opacity-80 dark:text-indigo-300"
-                >
+                <a href={REPO_URL} className="link truncate">
                   github.com/xuanz54/DevBox
                 </a>
                 <CopyButton text={REPO_URL} label="复制" />
@@ -78,7 +78,10 @@ export default function Settings() {
             </InfoRow>
             {native && <InfoRow label="系统">{window.NL_OS}</InfoRow>}
             {native && <InfoRow label="框架版本">{window.NL_VERSION}</InfoRow>}
-            <p className="mt-3 border-t border-black/10 pt-3 text-xs opacity-60 dark:border-white/10">
+            <p
+              className="mt-3 border-t pt-3 text-xs"
+              style={{ borderColor: 'var(--line)', color: 'var(--muted)' }}
+            >
               DevBox · 本地优先的开发者工具箱，所有数据在本地处理，无需联网。
             </p>
           </div>

@@ -60,11 +60,11 @@ export default function TimestampTool() {
       <ErrorBanner message={errorParts.join('；')} />
 
       <div className="mb-4 grid grid-cols-2 gap-3 text-sm">
-        <div className="rounded-xl border border-black/10 bg-white p-4 dark:border-white/10 dark:bg-white/5">
+        <div className="panel p-4">
           <div className="text-xs opacity-50">现在（Unix 秒）</div>
           <div className="mt-1 font-mono text-lg">{now.s}</div>
         </div>
-        <div className="rounded-xl border border-black/10 bg-white p-4 dark:border-white/10 dark:bg-white/5">
+        <div className="panel p-4">
           <div className="text-xs opacity-50">现在（Unix 毫秒）</div>
           <div className="mt-1 font-mono text-lg">{now.ms}</div>
         </div>
@@ -76,10 +76,10 @@ export default function TimestampTool() {
             <input
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              className="flex-1 rounded-md border border-black/10 bg-transparent px-3 py-2 font-mono text-sm outline-none focus:border-indigo-400 dark:border-white/10"
+              className="input flex-1 font-mono"
               placeholder="1700000000"
             />
-            <span className="self-center rounded bg-indigo-500/10 px-2 py-1 text-xs text-indigo-500">
+            <span className="badge self-center">
               识别为 {precision === 's' ? '秒' : '毫秒'}
             </span>
           </div>
@@ -103,7 +103,7 @@ export default function TimestampTool() {
             type="datetime-local"
             value={dateInput}
             onChange={(e) => setDateInput(e.target.value)}
-            className="rounded-md border border-black/10 bg-transparent px-2 py-1.5 text-sm outline-none dark:border-white/10"
+            className="input input-sm"
           />
           {fromDate?.ok ? (
             <span className="font-mono text-sm">

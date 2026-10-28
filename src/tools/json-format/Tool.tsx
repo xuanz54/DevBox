@@ -35,7 +35,7 @@ export default function JsonFormatTool() {
             <select
               value={indent}
               onChange={(e) => setIndent(Number(e.target.value))}
-              className="rounded-md border border-black/10 bg-white px-1.5 py-1 dark:border-white/10 dark:bg-white/5"
+              className="input input-sm"
             >
               {[0, 2, 4, 8].map((n) => (
                 <option key={n} value={n}>
@@ -86,11 +86,11 @@ export default function JsonFormatTool() {
     >
       <ErrorBanner message={error} />
       {notice ? (
-        <div className="mb-3 rounded-lg border border-indigo-500/30 bg-indigo-500/10 px-3 py-2 text-xs text-indigo-500">
+        <div className="notice notice-ok">
           {notice}
         </div>
       ) : null}
-      <div className="grid h-full min-h-0 grid-cols-2 gap-4">
+      <div className="grid min-h-0 flex-1 grid-cols-2 gap-4">
         <Pane label="输入" className="min-h-64">
           <TextArea value={input} onChange={setInput} placeholder="粘贴 JSON…" />
         </Pane>

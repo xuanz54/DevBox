@@ -72,9 +72,9 @@ export default function RandomTool() {
     >
       <ErrorBanner message={options.length === 0 ? '至少填入一个选项' : ''} />
 
-      <div className="grid h-full min-h-0 gap-4 md:grid-cols-2">
-        <div className="flex min-h-0 flex-col rounded-xl border border-black/10 bg-white dark:border-white/10 dark:bg-white/5">
-          <div className="flex items-center justify-between border-b border-black/10 px-3 py-1.5 text-[11px] font-medium uppercase tracking-wide opacity-50 dark:border-white/10">
+      <div className="grid min-h-0 flex-1 gap-4 md:grid-cols-2">
+        <div className="pane">
+          <div className="pane-head">
             <span>选项（每行一条，也可用逗号分隔）</span>
             <span>{options.length} 项</span>
           </div>
@@ -82,7 +82,7 @@ export default function RandomTool() {
         </div>
 
         <div className="flex min-h-0 flex-col gap-4">
-          <div className="flex min-h-52 flex-col items-center justify-center rounded-xl border border-black/10 bg-white p-6 dark:border-white/10 dark:bg-white/5">
+          <div className="panel p-6 flex min-h-52 flex-col items-center justify-center">
             {current ? (
               <div
                 className={`break-all text-center text-2xl font-semibold ${picking ? 'opacity-70' : ''}`}
@@ -95,7 +95,7 @@ export default function RandomTool() {
           </div>
 
           {shuffled ? (
-            <div className="rounded-xl border border-black/10 bg-white p-3 dark:border-white/10 dark:bg-white/5">
+            <div className="panel p-3">
               <div className="mb-2 text-[11px] font-medium uppercase tracking-wide opacity-50">
                 打乱结果
               </div>
@@ -109,7 +109,7 @@ export default function RandomTool() {
             </div>
           ) : null}
 
-          <div className="rounded-xl border border-black/10 bg-white p-3 dark:border-white/10 dark:bg-white/5">
+          <div className="panel p-3">
             <div className="mb-2 flex items-center justify-between text-[11px] font-medium uppercase tracking-wide opacity-50">
               <span>抽取历史</span>
               <button

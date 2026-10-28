@@ -28,7 +28,7 @@ function CurrencySelect({ value, onChange, id }: SelectProps) {
       id={id}
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="rounded-md border border-black/10 bg-white px-2.5 py-2 text-sm outline-none focus:border-indigo-400 dark:border-white/10 dark:bg-white/5"
+      className="input"
     >
       {CURRENCIES.map((cur) => (
         <option key={cur.code} value={cur.code}>
@@ -144,61 +144,87 @@ export default function ExchangeTool() {
       <ErrorBanner message={error} />
 
       {!snapshot && !loading && !error ? (
-        <ErrorBanner message="正在准备汇率数据…" />
+        <div className="notice">正在准备汇率数据…</div>
       ) : null}
 
       {snapshot && stale && !error ? (
-        <div className="mb-3 rounded-lg border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-xs text-amber-700 dark:text-amber-300">
+        <div className="notice notice-warn">
           缓存的汇率已超过 24 小时，可能不是最新，点右上角「刷新汇率」获取当前数据。
         </div>
       ) : null}
 
-      <div className="mx-auto max-w-xl">
-        <div className="rounded-xl border border-black/10 bg-white p-5 dark:border-white/10 dark:bg-white/5">
-          <div className="flex flex-wrap items-end gap-3">
-            <label className="flex min-w-36 flex-1 flex-col gap-1 text-xs opacity-60">
-              <span>金额</span>
-              <input
-                value={amountText}
-                onChange={(e) => setAmountText(e.target.value)}
-                inputMode="decimal"
-                spellCheck={false}
-                placeholder="输入金额"
-                className="rounded-md border border-black/10 bg-transparent px-2.5 py-2 text-base outline-none focus:border-indigo-400 dark:border-white/10"
-              />
-            </label>
-            <label className="flex flex-col gap-1 text-xs opacity-60">
-              <span>从</span>
+      <div className="mx-auto w-full max-w-xl">
+        <div className="panel p-5">
+          <label className="flex flex-col gap-1.5">
+            <span className="text-xs font-extrabold" style={{ color: 'var(--muted)' }}>
+              金额
+            </span>
+            <input
+              value={amountText}
+              onChange={(e) => setAmountText(e.target.value)}
+              inputMode="decimal"
+              spellCheck={false}
+              placeholder="输入金额"
+              className="input text-base"
+            />
+          </label>
+
+          <div
+            className="mt-4 grid items-end gap-2"
+            style={{ gridTemplateColumns: '1fr auto 1fr' }}
+          >
+            <label className="flex min-w-0 flex-col gap-1.5">
+              <span className="text-xs font-extrabold" style={{ color: 'var(--muted)' }}>
+                从
+              </span>
               <CurrencySelect value={from} onChange={setFrom} />
             </label>
             <button
               type="button"
               onClick={swap}
               title="交换币种"
-              className="mb-0.5 rounded-md border border-black/10 bg-white px-2.5 py-2 text-sm hover:border-indigo-400 dark:border-white/10 dark:bg-white/5"
+              aria-label="交换币种"
+              className="swap-btn"
             >
               ⇄
             </button>
-            <label className="flex flex-col gap-1 text-xs opacity-60">
-              <span>到</span>
+            <label className="flex min-w-0 flex-col gap-1.5">
+              <span className="text-xs font-extrabold" style={{ color: 'var(--muted)' }}>
+                到
+              </span>
               <CurrencySelect value={to} onChange={setTo} />
             </label>
           </div>
 
-          <div className="mt-5 border-t border-black/10 pt-4 dark:border-white/10">
+          <div className="mt-5 hr-top pt-4">
             {amountParsed.ok && converted?.ok ? (
               <>
-                <div className="text-3xl font-semibold tracking-tight">
+                <div
+                  className="text-[32px] font-black tracking-tight"
+                  style={{ color: 'var(--ink-strong)', lineHeight: 1.15 }}
+                >
                   {formatMoney(converted.value, to)}{' '}
-                  <span className="text-base font-normal opacity-60">{to}</span>
+                  <span className="text-base font-extrabold" style={{ color: 'var(--muted)' }}>
+                    {to}
+                  </span>
                 </div>
-                <div className="mt-1 text-sm opacity-60">{toDef?.name}</div>
+                <div className="mt-1 text-sm" style={{ color: 'var(--muted)' }}>
+                  {toDef?.name}
+                </div>
               </>
             ) : (
-              <div className="text-3xl font-semibold tracking-tight opacity-30">—</div>
+              <div
+                className="text-[32px] font-black tracking-tight"
+                style={{ color: 'var(--line-strong)', lineHeight: 1.15 }}
+              >
+                —
+              </div>
             )}
 
-            <div className="mt-3 space-y-1 text-xs opacity-60">
+            <div
+              className="mt-3 flex flex-col gap-1 text-xs"
+              style={{ color: 'var(--muted)' }}
+            >
               {rate?.ok ? (
                 <div>
                   汇率：1 {from} = {formatRate(rate.value)} {to}
@@ -218,12 +244,9 @@ export default function ExchangeTool() {
           </div>
         </div>
 
-        <p className="mt-3 text-center text-xs opacity-50">
+        <p className="mt-3 text-center text-xs" style={{ color: 'var(--muted)' }}>
           汇率来源于{' '}
-          <a
-            href="https://frankfurter.dev"
-            className="underline hover:text-indigo-500"
-          >
+          <a href="https://frankfurter.dev" className="link">
             frankfurter.dev
           </a>
           （免费、无需 API Key），仅在刷新时联网；换算计算全部在本地完成。

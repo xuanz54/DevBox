@@ -32,7 +32,7 @@ export default function JwtTool() {
         <>
           <button
             type="button"
-            className="rounded-md border border-black/10 bg-white px-2.5 py-1 text-xs dark:border-white/10 dark:bg-white/5"
+            className="input input-sm"
             onClick={() => setToken(b64urlDemo())}
           >
             示例
@@ -51,7 +51,7 @@ export default function JwtTool() {
           <span
             className={`rounded-full px-2.5 py-1 ${
               expiry.expired
-                ? 'bg-red-500/15 text-red-500'
+                ? 'bg-[var(--danger-soft)] text-[var(--danger)]'
                 : 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-300'
             }`}
           >
@@ -75,7 +75,7 @@ export default function JwtTool() {
         </Pane>
       </div>
       {parts ? (
-        <div className="mt-3 break-all rounded-lg bg-black/5 px-3 py-2 font-mono text-[11px] opacity-60 dark:bg-white/5">
+        <div className="mt-3 break-all rounded-lg px-3 py-2 font-mono text-[11px]" style={{ background: 'var(--bg-soft)', color: 'var(--muted)' }}>
           签名 Signature：{parts.signature || '(空)'}
         </div>
       ) : null}

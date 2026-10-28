@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { os } from '@neutralinojs/lib';
-import { NavLink, Route, Routes } from 'react-router-dom';
+import { Link, Route, Routes, useNavigate } from 'react-router-dom';
 import {
   categoryLabels,
   searchTools,
@@ -15,43 +15,171 @@ import logo from './icons/logo.png';
 
 const categoryOrder: ToolCategory[] = ['encode', 'time', 'text', 'gen'];
 
+const toolIcons: Record<string, string> = {
+  'json-format': '{}',
+  'json-diff': '⇄',
+  base64: '64',
+  url: '%',
+  'html-entity': '&',
+  radix: '10',
+  jwt: 'JWT',
+  unit: '㎜',
+  exchange: '¥',
+  yaml: 'Y',
+  csv: 'C',
+  timestamp: 'TS',
+  date: '日',
+  regex: '.*',
+  'text-diff': '±',
+  'text-stat': '#',
+  case: 'Aa',
+  md: 'M',
+  hash: '#',
+  uuid: 'id',
+  password: '∗',
+  qr: '▦',
+  random: '◎',
+  color: '◐',
+};
+
 function Placeholder({ title, desc }: { title: string; desc: string }) {
   return (
     <div className="flex h-full flex-col items-center justify-center gap-3 p-10 text-center">
-      <div className="rounded-2xl bg-indigo-500/10 px-4 py-2 text-3xl">🚧</div>
-      <h2 className="text-xl font-semibold">{title}</h2>
-      <p className="max-w-md text-sm opacity-60">{desc}</p>
+      <div className="panel px-5 py-3 text-2xl">🚧</div>
+      <h2 className="text-xl font-black">{title}</h2>
+      <p className="max-w-md text-sm" style={{ color: 'var(--muted)' }}>
+        {desc}
+      </p>
     </div>
   );
 }
 
-function Home() {
+function Home({
+  query,
+  setQuery,
+}: {
+  query: string;
+  setQuery: (v: string) => void;
+}) {
+  const [cat, setCat] = useState<ToolCategory | 'all'>('all');
+  const filtered = useMemo(() => searchTools(query), [query]);
+
+  const counts = useMemo(() => {
+    const map: Record<string, number> = { all: filtered.length };
+    for (const c of categoryOrder) {
+      map[c] = filtered.filter((t) => t.category === c).length;
+    }
+    return map;
+  }, [filtered]);
+
+  const groups = categoryOrder
+    .filter((c) => cat === 'all' || c === cat)
+    .map((c) => ({ cat: c, items: filtered.filter((t) => t.category === c) }))
+    .filter((g) => g.items.length > 0);
+
   return (
-    <div className="h-full overflow-auto p-8">
-      <h1 className="text-2xl font-bold tracking-tight">DevBox</h1>
-      <p className="mt-1 text-sm opacity-60">
-        本地优先的开发者工具箱 · 共 {tools.length} 个工具
-      </p>
-      <div className="mt-6 grid grid-cols-[repeat(auto-fill,minmax(220px,1fr))] gap-3">
-        {tools.map((t) => (
-          <NavLink
-            key={t.id}
-            to={t.path}
-            className="rounded-xl border border-black/10 bg-white/70 p-4 transition hover:border-indigo-400/60 hover:shadow-sm dark:border-white/10 dark:bg-white/5"
+    <div className="home-scroll">
+      <div className="home-inner">
+        <h1 className="home-title">今天想动哪个工具？</h1>
+        <p className="home-sub">
+          全部在本机运行，不上传、不联网（汇率刷新除外）。
+        </p>
+
+        <label className="search-box">
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 16 16"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            aria-hidden="true"
           >
-            <div className="font-medium">{t.name}</div>
-            <div className="mt-1 text-xs opacity-60">{t.desc}</div>
-          </NavLink>
+            <circle cx="7" cy="7" r="4.6" />
+            <path d="M10.6 10.6 14 14" />
+          </svg>
+          <input
+            id="home-search"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="搜工具，比如 json、时间、哈希"
+            autoComplete="off"
+            spellCheck={false}
+            aria-label="搜索工具"
+          />
+          <span className="search-kbd">CTRL K</span>
+        </label>
+
+        <div className="chips" role="group" aria-label="工具分类">
+          {([['all', '全部'], ...categoryOrder.map((c) => [c, categoryLabels[c]])] as [
+            ToolCategory | 'all',
+            string,
+          ][]).map(([key, label]) => (
+            <button
+              key={key}
+              type="button"
+              data-cat={key}
+              aria-pressed={cat === key}
+              className="chip"
+              onClick={() => setCat(key)}
+            >
+              {label}
+              <span className="chip-count">{counts[key] ?? 0}</span>
+            </button>
+          ))}
+        </div>
+
+        {groups.map(({ cat: c, items }) => (
+          <section key={c} className="grp" data-cat={c}>
+            <h2 className="grp-head">
+              <span className="grp-dot" aria-hidden="true" />
+              {categoryLabels[c]}
+              <span className="grp-count">{items.length}</span>
+            </h2>
+            <div className="tool-grid">
+              {items.map((t) => {
+                const icon = toolIcons[t.id] ?? t.name.slice(0, 1);
+                return (
+                  <Link key={t.id} to={t.path} className="tool-card">
+                    <span
+                      className={`tool-ic${icon.length > 2 ? ' is-wide' : ''}`}
+                      data-cat={t.category}
+                      aria-hidden="true"
+                    >
+                      {icon}
+                    </span>
+                    <span className="tool-meta">
+                      <span className="tool-name">{t.name}</span>
+                      <span className="tool-desc">{t.desc}</span>
+                    </span>
+                  </Link>
+                );
+              })}
+            </div>
+          </section>
         ))}
+
+        {groups.length === 0 ? (
+          <div className="home-empty">
+            没有匹配的工具 — 试试「json」「哈希」，或者清空搜索。
+          </div>
+        ) : null}
       </div>
     </div>
   );
 }
 
-function ToolRoutes() {
+function ToolRoutes({
+  query,
+  setQuery,
+}: {
+  query: string;
+  setQuery: (v: string) => void;
+}) {
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
+      <Route path="/" element={<Home query={query} setQuery={setQuery} />} />
       {tools.map((t: ToolDef) => {
         const Comp = toolComponents[t.id];
         return (
@@ -61,197 +189,82 @@ function ToolRoutes() {
             element={Comp ? <Comp /> : <Placeholder title={t.name} desc={t.desc} />}
           />
         );
-        })}
-        <Route path="settings" element={<Settings />} />
-        <Route path="*" element={<Home />} />
+      })}
+      <Route path="settings" element={<Settings />} />
+      <Route path="*" element={<Home query={query} setQuery={setQuery} />} />
     </Routes>
-  );
-}
-
-function Sidebar({
-  query,
-  setQuery,
-  collapsed,
-  onToggle,
-}: {
-  query: string;
-  setQuery: (v: string) => void;
-  collapsed: boolean;
-  onToggle: () => void;
-}) {
-  const filtered = searchTools(query);
-  const grouped = categoryOrder
-    .map((cat) => ({ cat, items: filtered.filter((t) => t.category === cat) }))
-    .filter((g) => g.items.length > 0);
-
-  return (
-    <aside
-      className={`flex shrink-0 flex-col overflow-hidden bg-white/60 transition-[width] duration-200 ease-out dark:bg-black/20 ${
-        collapsed
-          ? 'w-0'
-          : 'w-60 border-r border-black/10 dark:border-white/10'
-      }`}
-    >
-      <div className="flex min-h-0 w-60 flex-1 flex-col">
-        <div className="flex items-center gap-2 px-4 pt-4 pb-2">
-          <img
-            src={logo}
-            alt="DevBox"
-            className="h-8 w-8 rounded-lg object-cover"
-          />
-          <div>
-            <div className="text-sm font-semibold leading-none">DevBox</div>
-            <div className="mt-0.5 text-[10px] opacity-50">Developer Toolbox</div>
-          </div>
-          <SidebarToggle
-            collapsed={collapsed}
-            onToggle={onToggle}
-            className="ml-auto"
-          />
-        </div>
-        <div className="px-3 pb-2">
-          <input
-            id="tool-search"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="搜索工具… (Ctrl+K)"
-            className="w-full rounded-lg border border-black/10 bg-black/5 px-3 py-1.5 text-sm outline-none placeholder:opacity-40 focus:border-indigo-400 dark:border-white/10 dark:bg-white/5"
-          />
-        </div>
-        <nav className="flex-1 overflow-y-auto px-2 pb-4">
-          <NavLink
-            to="/"
-            end
-            className={({ isActive }) =>
-              `mb-1 block rounded-lg px-3 py-2 text-sm transition ${
-                isActive
-                  ? 'bg-indigo-500/15 text-indigo-600 dark:text-indigo-300'
-                  : 'opacity-70 hover:bg-black/5 dark:hover:bg-white/5'
-              }`
-            }
-          >
-            首页
-          </NavLink>
-          {grouped.map(({ cat, items }) => (
-            <div key={cat} className="mt-3">
-              <div className="px-3 pb-1 text-[11px] font-medium uppercase tracking-wide opacity-40">
-                {categoryLabels[cat]}
-              </div>
-              {items.map((t) => (
-                <NavLink
-                  key={t.id}
-                  to={t.path}
-                  className={({ isActive }) =>
-                    `mb-0.5 block rounded-lg px-3 py-1.5 text-sm transition ${
-                      isActive
-                        ? 'bg-indigo-500/15 font-medium text-indigo-600 dark:text-indigo-300'
-                        : 'opacity-70 hover:bg-black/5 dark:hover:bg-white/5'
-                    }`
-                  }
-                >
-                  {t.name}
-                </NavLink>
-              ))}
-            </div>
-          ))}
-          {grouped.length === 0 && (
-            <div className="px-3 py-6 text-center text-xs opacity-40">无匹配工具</div>
-          )}
-        </nav>
-        <div className="shrink-0 border-t border-black/10 px-2 py-2 dark:border-white/10">
-          <NavLink
-            to="/settings"
-            className={({ isActive }) =>
-              `block rounded-lg px-3 py-1.5 text-sm transition ${
-                isActive
-                  ? 'bg-indigo-500/15 font-medium text-indigo-600 dark:text-indigo-300'
-                  : 'opacity-70 hover:bg-black/5 dark:hover:bg-white/5'
-              }`
-            }
-          >
-            ⚙️ 设置
-          </NavLink>
-        </div>
-      </div>
-    </aside>
   );
 }
 
 function ThemeToggle() {
   const resolved = useThemeStore((s) => s.resolved);
   const toggle = useThemeStore((s) => s.toggle);
+  const dark = resolved === 'dark';
   return (
     <button
       type="button"
       onClick={toggle}
-      title="切换主题"
-      className="rounded-lg border border-black/10 bg-white/70 px-2.5 py-1 text-xs opacity-70 hover:opacity-100 dark:border-white/10 dark:bg-white/10"
+      title={dark ? '切换到浅色' : '切换到深色'}
+      aria-label="切换主题"
+      className="icon-btn"
     >
-      {resolved === 'dark' ? '☀️' : '🌙'}
-    </button>
-  );
-}
-
-function SidebarToggle({
-  collapsed,
-  onToggle,
-  className = '',
-}: {
-  collapsed: boolean;
-  onToggle: () => void;
-  className?: string;
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onToggle}
-      title={collapsed ? '展开侧栏' : '收起侧栏'}
-      className={`shrink-0 rounded-lg border border-black/10 bg-white/70 p-1 opacity-70 hover:opacity-100 dark:border-white/10 dark:bg-white/10 ${className}`}
-    >
-      <svg
-        viewBox="0 0 16 16"
-        className="h-3.5 w-3.5"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        aria-hidden="true"
-      >
-        {collapsed ? (
-          <path d="M6.5 3.5 11 8l-4.5 4.5" />
-        ) : (
-          <path d="M9.5 3.5 5 8l4.5 4.5" />
-        )}
-      </svg>
+      {dark ? (
+        <svg
+          width="17"
+          height="17"
+          viewBox="0 0 20 20"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.6"
+          strokeLinecap="round"
+          aria-hidden="true"
+        >
+          <circle cx="10" cy="10" r="3.6" />
+          <path d="M10 2v2M10 16v2M2 10h2M16 10h2M4.4 4.4l1.4 1.4M14.2 14.2l1.4 1.4M15.6 4.4l-1.4 1.4M5.8 14.2l-1.4 1.4" />
+        </svg>
+      ) : (
+        <svg
+          width="17"
+          height="17"
+          viewBox="0 0 20 20"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.6"
+          strokeLinejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M16.5 12.4A7 7 0 0 1 7.6 3.5a7 7 0 1 0 8.9 8.9Z" />
+        </svg>
+      )}
     </button>
   );
 }
 
 export default function App() {
   const [query, setQuery] = useState('');
-  const [collapsed, setCollapsed] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
         e.preventDefault();
-        if (collapsed) {
-          setCollapsed(false);
+        navigate('/');
+        requestAnimationFrame(() => {
           requestAnimationFrame(() => {
-            document.getElementById('tool-search')?.focus();
+            const el = document.getElementById('home-search') as HTMLInputElement | null;
+            el?.focus();
+            el?.select();
           });
-        } else {
-          document.getElementById('tool-search')?.focus();
-        }
+        });
       }
       if (e.key === 'Escape' && query) {
         setQuery('');
+        (document.activeElement as HTMLElement | null)?.blur?.();
       }
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [query, collapsed]);
+  }, [query, navigate]);
 
   useEffect(() => {
     const openExternal = (e: MouseEvent) => {
@@ -277,25 +290,35 @@ export default function App() {
   }, []);
 
   return (
-    <div className="flex h-full">
-      <Sidebar
-        query={query}
-        setQuery={setQuery}
-        collapsed={collapsed}
-        onToggle={() => setCollapsed((c) => !c)}
-      />
-      <main className="relative min-w-0 flex-1 bg-[#f4f5f7] dark:bg-[#0c0d10]">
-        <div className="absolute right-4 top-4 z-10">
+    <div className="app-shell">
+      <header className="app-topbar">
+        <img src={logo} alt="" className="app-logo" />
+        <span className="app-name">DevBox</span>
+        <span className="app-chip">{tools.length} 个工具</span>
+        <div className="topbar-right">
           <ThemeToggle />
+          <Link to="/settings" className="icon-btn" title="设置" aria-label="设置">
+            <svg
+              width="17"
+              height="17"
+              viewBox="0 0 20 20"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              strokeLinecap="round"
+              aria-hidden="true"
+            >
+              <path d="M3 5.5h4.2M10.8 5.5H17M3 10h6.2M12.8 10H17M3 14.5h2.2M8.8 14.5H17" />
+              <circle cx="9" cy="5.5" r="1.7" />
+              <circle cx="11" cy="10" r="1.7" />
+              <circle cx="7" cy="14.5" r="1.7" />
+            </svg>
+          </Link>
         </div>
-        {collapsed && (
-          <div className="absolute left-4 top-4 z-10">
-            <SidebarToggle collapsed onToggle={() => setCollapsed(false)} />
-          </div>
-        )}
-        <div className="h-full pt-10">
-          <ToolRoutes />
-        </div>
+      </header>
+
+      <main className="app-main">
+        <ToolRoutes query={query} setQuery={setQuery} />
       </main>
     </div>
   );

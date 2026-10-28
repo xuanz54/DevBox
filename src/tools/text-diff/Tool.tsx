@@ -20,7 +20,7 @@ export default function TextDiffTool() {
         <>
           <span className="text-xs">
             <span className="text-emerald-500">+{sum.added}</span>{' '}
-            <span className="text-red-500">-{sum.removed}</span>
+            <span className="text-[var(--danger)]">-{sum.removed}</span>
           </span>
           <CopyButton text={unified} label="复制" />
         </>
@@ -44,7 +44,7 @@ export default function TextDiffTool() {
                   l.type === 'add'
                     ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-300'
                     : l.type === 'del'
-                      ? 'bg-red-500/10 text-red-600 dark:text-red-300'
+                      ? 'bg-[var(--danger-soft)] text-[var(--danger)]'
                       : 'opacity-70'
                 }
               >

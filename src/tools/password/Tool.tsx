@@ -111,60 +111,67 @@ export default function PasswordTool() {
         </>
       }
     >
-      <div className="mb-4 flex flex-wrap items-center gap-4 text-sm">
-        <label className="flex items-center gap-2">
-          长度
-          <input
-            type="number"
-            min={4}
-            max={128}
-            value={length}
-            onChange={(e) => setLength(Number(e.target.value))}
-            className="w-20 rounded-md border border-black/10 bg-white px-2 py-1 dark:border-white/10 dark:bg-white/5"
-          />
-        </label>
-        <label className="flex items-center gap-2">
-          数量
-          <input
-            type="number"
-            min={1}
-            max={50}
-            value={count}
-            onChange={(e) => setCount(Number(e.target.value))}
-            className="w-20 rounded-md border border-black/10 bg-white px-2 py-1 dark:border-white/10 dark:bg-white/5"
-          />
-        </label>
-        <label className="flex items-center gap-2">
-          <input
-            type="checkbox"
-            checked={excludeAmbiguous}
-            onChange={(e) => setExcludeAmbiguous(e.target.checked)}
-          />
-          排除易混淆（I l 1 O 0 o）
-        </label>
-        <span className="text-xs opacity-60">
-          字符池 {poolSize} 个 · 约 {bits} 比特（bits）随机度
-        </span>
-      </div>
-      <div className="mb-4 flex flex-wrap gap-2">
-        {(Object.keys(SETS) as SetKey[]).map((k) => (
-          <button
-            key={k}
-            type="button"
-            className={`${btn(sets.includes(k))} ${sets.includes(k) ? '' : 'opacity-60'}`}
-            onClick={() => toggleSet(k)}
-          >
-            {SET_LABELS[k]}
+      <div className="panel mb-4 p-4">
+        <div className="flex flex-wrap items-center gap-4 text-sm">
+          <label className="flex items-center gap-2">
+            <span className="text-xs font-extrabold" style={{ color: 'var(--muted)' }}>
+              长度
+            </span>
+            <input
+              type="number"
+              min={4}
+              max={128}
+              value={length}
+              onChange={(e) => setLength(Number(e.target.value))}
+              className="input input-sm w-20"
+            />
+          </label>
+          <label className="flex items-center gap-2">
+            <span className="text-xs font-extrabold" style={{ color: 'var(--muted)' }}>
+              数量
+            </span>
+            <input
+              type="number"
+              min={1}
+              max={50}
+              value={count}
+              onChange={(e) => setCount(Number(e.target.value))}
+              className="input input-sm w-20"
+            />
+          </label>
+          <label className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              checked={excludeAmbiguous}
+              onChange={(e) => setExcludeAmbiguous(e.target.checked)}
+            />
+            排除易混淆（I l 1 O 0 o）
+          </label>
+          <span className="text-xs" style={{ color: 'var(--muted)' }}>
+            字符池 {poolSize} 个 · 约 {bits} 比特（bits）随机度
+          </span>
+        </div>
+        <div className="mt-3 flex flex-wrap gap-2">
+          {(Object.keys(SETS) as SetKey[]).map((k) => (
+            <button
+              key={k}
+              type="button"
+              aria-pressed={sets.includes(k)}
+              className="toggle"
+              onClick={() => toggleSet(k)}
+            >
+              {SET_LABELS[k]}
+            </button>
+          ))}
+          <button type="button" className={btn()} onClick={generate}>
+            刷新
           </button>
-        ))}
-        <button type="button" className={btn()} onClick={generate}>
-          刷新
-        </button>
+        </div>
       </div>
-      <div className="rounded-xl border border-black/10 bg-white p-3 dark:border-white/10 dark:bg-white/5">
+      <div className="panel p-3">
         <div className="flex flex-col gap-1.5 font-mono text-sm">
           {items.length === 0 ? (
-            <span className="opacity-40">点击「生成」…</span>
+            <span style={{ color: 'var(--muted)' }}>点击「生成」…</span>
           ) : (
             items.map((p, i) => (
               <div key={i} className="flex items-center justify-between gap-3">

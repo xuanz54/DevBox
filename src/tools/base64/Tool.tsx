@@ -32,15 +32,13 @@ export default function Base64Tool() {
       desc="Base64（一种把任意内容用 64 个可打印字符来表示的编码方式）与原文互转，支持中文等 UTF-8 字符"
       actions={
         <>
-          <div className="flex overflow-hidden rounded-md border border-black/10 text-xs dark:border-white/10">
+          <div className="seg">
             {(['encode', 'decode'] as const).map((m) => (
               <button
                 key={m}
                 type="button"
                 onClick={() => setMode(m)}
-                className={`px-2.5 py-1 ${
-                  mode === m ? 'bg-indigo-500 text-white' : 'bg-white dark:bg-white/5'
-                }`}
+                className={`seg-btn${mode === m ? ' seg-on' : ''}`}
               >
                 {m === 'encode' ? '编码' : '解码'}
               </button>
@@ -54,7 +52,7 @@ export default function Base64Tool() {
       }
     >
       <ErrorBanner message={error} />
-      <div className="grid h-full min-h-0 grid-cols-2 gap-4">
+      <div className="grid min-h-0 flex-1 grid-cols-2 gap-4">
         <Pane label={mode === 'encode' ? '原文' : 'Base64'} className="min-h-64">
           <TextArea value={input} onChange={setInput} />
         </Pane>

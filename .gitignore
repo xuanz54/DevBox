@@ -21,3 +21,6 @@ node_modules/
 # Editor / OS
 .DS_Store
 Thumbs.db
+
+# 首次启动窗口自适应的标记文件
+.devbox-window-fit

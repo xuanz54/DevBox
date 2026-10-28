@@ -60,7 +60,7 @@ export default function UuidTool() {
             max={200}
             value={count}
             onChange={(e) => setCount(Number(e.target.value))}
-            className="w-20 rounded-md border border-black/10 bg-white px-2 py-1 dark:border-white/10 dark:bg-white/5"
+            className="input input-sm w-20"
           />
         </label>
         <label className="flex items-center gap-2">
@@ -72,7 +72,7 @@ export default function UuidTool() {
           大写
         </label>
       </div>
-      <div className="rounded-xl border border-black/10 bg-white p-3 dark:border-white/10 dark:bg-white/5">
+      <div className="panel p-3">
         <div className="flex flex-col gap-1 font-mono text-sm">
           {display.map((u, i) => (
             <div key={`${u}-${i}`} className="flex items-center justify-between gap-3">

@@ -42,7 +42,7 @@ export default function CsvTool() {
       desc="表格数据与 JSON 互转"
       actions={
         <>
-          <div className="flex overflow-hidden rounded-md border border-black/10 text-xs dark:border-white/10">
+          <div className="seg">
             {(
               [
                 ['csv2json', 'CSV → JSON'],
@@ -56,9 +56,7 @@ export default function CsvTool() {
                   setMode(m);
                   setInput(m === 'csv2json' ? CSV_SAMPLE : JSON_SAMPLE);
                 }}
-                className={`px-2.5 py-1 ${
-                  mode === m ? 'bg-indigo-500 text-white' : 'bg-white dark:bg-white/5'
-                }`}
+                className={`seg-btn${mode === m ? ' seg-on' : ''}`}
               >
                 {label}
               </button>
@@ -89,7 +87,7 @@ export default function CsvTool() {
           <select
             value={delimiter}
             onChange={(e) => setDelimiter(e.target.value)}
-            className="rounded-md border border-black/10 bg-white px-2 py-1.5 dark:border-white/10 dark:bg-white/5"
+            className="input input-sm"
           >
             {DELIMITERS.map((d) => (
               <option key={d.key} value={d.key}>
@@ -110,7 +108,7 @@ export default function CsvTool() {
         ) : null}
       </div>
 
-      <div className="grid h-full min-h-0 grid-cols-2 gap-4">
+      <div className="grid min-h-0 flex-1 grid-cols-2 gap-4">
         <Pane label={isCsv ? 'CSV' : 'JSON'} className="min-h-64">
           <TextArea value={input} onChange={setInput} mono={isCsv} />
         </Pane>

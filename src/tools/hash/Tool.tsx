@@ -73,7 +73,7 @@ export default function HashTool() {
       actions={<CopyButton text={results['SHA-256'] ?? ''} label="复制 SHA-256 摘要" />}
     >
       {error ? (
-        <div className="mb-3 rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2 text-xs text-red-500">
+        <div className="notice notice-error">
           {error}
         </div>
       ) : null}
@@ -111,7 +111,7 @@ export default function HashTool() {
         {ALGOS.map((algo) => (
           <div
             key={algo.key}
-            className="rounded-xl border border-black/10 bg-white p-3 dark:border-white/10 dark:bg-white/5"
+            className="panel p-3"
           >
             <div className="mb-1 flex items-center justify-between gap-3">
               <span className="min-w-0">

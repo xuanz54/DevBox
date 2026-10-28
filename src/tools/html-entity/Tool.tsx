@@ -19,7 +19,7 @@ export default function HtmlEntityTool() {
       desc="HTML 实体（Entity，网页里用 &名字; 或 &#数字; 写法表示 < > & 等特殊字符）转义与还原"
       actions={
         <>
-          <div className="flex overflow-hidden rounded-md border border-black/10 text-xs dark:border-white/10">
+          <div className="seg">
             {(
               [
                 ['encode', '转义'],
@@ -30,7 +30,7 @@ export default function HtmlEntityTool() {
                 key={m}
                 type="button"
                 onClick={() => setMode(m)}
-                className={`px-2.5 py-1 ${mode === m ? 'bg-indigo-500 text-white' : 'bg-white dark:bg-white/5'}`}
+                className={`seg-btn${mode === m ? ' seg-on' : ''}`}
               >
                 {label}
               </button>
@@ -51,7 +51,7 @@ export default function HtmlEntityTool() {
       }
     >
       <ErrorBanner message={error} />
-      <div className="grid h-full min-h-0 grid-cols-2 gap-4">
+      <div className="grid min-h-0 flex-1 grid-cols-2 gap-4">
         <Pane label="输入" className="min-h-64">
           <TextArea value={input} onChange={setInput} />
         </Pane>

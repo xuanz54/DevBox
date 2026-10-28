@@ -42,7 +42,7 @@ export default function YamlTool() {
       desc="配置文件格式互转：YAML（一种靠缩进排版、常用写配置文件的格式）与 JSON（JavaScript 对象表示法，前后端交换数据最常用的格式）互转"
       actions={
         <>
-          <div className="flex overflow-hidden rounded-md border border-black/10 text-xs dark:border-white/10">
+          <div className="seg">
             {(
               [
                 ['yaml2json', 'YAML → JSON'],
@@ -56,9 +56,7 @@ export default function YamlTool() {
                   setMode(m);
                   setInput(m === 'yaml2json' ? YAML_SAMPLE : JSON_SAMPLE);
                 }}
-                className={`px-2.5 py-1 ${
-                  mode === m ? 'bg-indigo-500 text-white' : 'bg-white dark:bg-white/5'
-                }`}
+                className={`seg-btn${mode === m ? ' seg-on' : ''}`}
               >
                 {label}
               </button>
@@ -82,7 +80,7 @@ export default function YamlTool() {
       }
     >
       <ErrorBanner message={result.ok ? '' : result.error} />
-      <div className="grid h-full min-h-0 grid-cols-2 gap-4">
+      <div className="grid min-h-0 flex-1 grid-cols-2 gap-4">
         <Pane label={isYaml ? 'YAML' : 'JSON'} className="min-h-64">
           <TextArea value={input} onChange={setInput} />
         </Pane>

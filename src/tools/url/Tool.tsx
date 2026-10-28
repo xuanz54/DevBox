@@ -27,7 +27,7 @@ export default function UrlTool() {
       desc="网址编解码：把中文、空格等特殊字符转成 %XX 形式（encodeURIComponent，即对网址中的字符进行转义编码），或还原回来；并可解析查询串（网址 ? 后面的 name=value 键值对)"
       actions={
         <>
-          <div className="flex overflow-hidden rounded-md border border-black/10 text-xs dark:border-white/10">
+          <div className="seg">
             {(
               [
                 ['encode', '编码'],
@@ -39,7 +39,7 @@ export default function UrlTool() {
                 key={m}
                 type="button"
                 onClick={() => setMode(m)}
-                className={`px-2.5 py-1 ${mode === m ? 'bg-indigo-500 text-white' : 'bg-white dark:bg-white/5'}`}
+                className={`seg-btn${mode === m ? ' seg-on' : ''}`}
               >
                 {label}
               </button>
@@ -50,7 +50,7 @@ export default function UrlTool() {
       }
     >
       <ErrorBanner message={error} />
-      <div className="grid h-full min-h-0 grid-cols-2 gap-4">
+      <div className="grid min-h-0 flex-1 grid-cols-2 gap-4">
         <Pane label="输入" className="min-h-64">
           <TextArea value={input} onChange={setInput} />
         </Pane>

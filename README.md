@@ -16,7 +16,7 @@
 
 ![DevBox 首页（亮色）](docs/screenshots/home.png)
 
-打开即见全部工具：左侧按分类导航（点 « 可折叠侧栏），右侧为卡片入口；顶部搜索框支持 **Ctrl+K** 全局搜索，右上角可快速切换亮/暗主题。
+打开即见全部工具：顶部大搜索框支持 **Ctrl+K** 全局搜索，分类胶囊一键筛选，下方按分类分组排列工具卡片；右上角可快速切换亮/暗主题。
 
 ### 首页（暗色）
 
@@ -64,7 +64,7 @@ Unix 时间戳（秒/毫秒）与日期互转：展示当前时间戳，支持�
 
 ![设置](docs/screenshots/settings.png)
 
-侧栏底部进入设置页：主题支持「跟随系统 / 浅色 / 深色」三态切换；关于区展示应用版本、GitHub 仓库链接（用系统默认浏览器打开）与运行环境信息。
+右上角齿轮进入设置页：主题支持「跟随系统 / 浅色 / 深色」三态切换；关于区展示应用版本、GitHub 仓库链接（用系统默认浏览器打开）与运行环境信息。
 
 ## 功能（24）
 
@@ -75,7 +75,7 @@ Unix 时间戳（秒/毫秒）与日期互转：展示当前时间戳，支持�
 | 文本 | 正则测试、文本 Diff、文本统计、命名转换、Markdown 预览 |
 | 生成/哈希 | 哈希计算、UUID、密码生成、二维码生成、随机决策、颜色工具 |
 
-其他：全局搜索（Ctrl+K）、主题三态（跟随系统/浅色/深色）、可折叠侧栏、设置页、外链用系统默认浏览器打开、剪贴板/文件打开保存（桌面端原生对话框）。界面文案以中文为主，专有名词均附中文解释。
+其他：全局搜索（Ctrl+K）、分类胶囊筛选、主题三态（跟随系统/浅色/深色）、设置页、外链用系统默认浏览器打开、剪贴板/文件打开保存（桌面端原生对话框）。界面文案以中文为主，专有名词均附中文解释。
 
 ## 环境要求（开发）
 
@@ -129,14 +129,14 @@ neu run            # 开发窗口
 'my-tool': MyTool,
 ```
 
-首页卡片、侧边栏、Ctrl+K 搜索会随 `registry` 自动出现；未挂组件时路由显示占位页。
+首页卡片、分类胶囊、Ctrl+K 搜索会随 `registry` 自动出现；未挂组件时路由显示占位页。
 
 ## 其他定制
 
 | 项 | 位置 |
 |---|---|
 | 应用图标 / 任务栏 | `resources/icons/appIcon.png`、`resources/favicon.ico`、`src/icons/logo.png` |
-| 窗口尺寸 / 标题 | `neutralino.config.json` → `modes.window` |
+| 窗口尺寸 / 标题 | `neutralino.config.json` → `modes.window`（首次启动按屏幕可用区域自适应为约 94%×92%，之后记住用户调过的尺寸） |
 | 原生 API 白名单 | `neutralino.config.json` → `nativeAllowList` |
 | 主题 | `src/stores/theme.ts` |
 | Windows 文件属性 | 根节点 `applicationName` / `description` / `author` / `copyright` / `applicationIcon` |
@@ -158,8 +158,8 @@ neu build --embed-resources --release
 **网页（推荐首次）：**
 
 1. 打开仓库 → **Releases** → **Create a new release**
-2. **Tag**：`v1.1.0`（与 `package.json` / config 的 `version` 一致；Target 选 `main`）
-3. **Release title**：如 `v1.1.0`
+2. **Tag**：`v1.2.0`（与 `package.json` / config 的 `version` 一致；Target 选 `main`）
+3. **Release title**：如 `v1.2.0`
 4. **Release notes**：写清改动；可点 Generate release notes
 5. 把 `dist/DevBox/DevBox-win_x64.exe` 拖到附件区
 6. Publish release
@@ -167,11 +167,11 @@ neu build --embed-resources --release
 **命令行（可选）：**
 
 ```bash
-git tag v1.1.0
-git push origin v1.1.0
-gh release create v1.1.0 dist/DevBox/DevBox-win_x64.exe \
-  --title "v1.1.0" \
-  --notes "新增设置页与主题三态；侧栏可折叠；外链用系统默认浏览器打开"
+git tag v1.2.0
+git push origin v1.2.0
+gh release create v1.2.0 dist/DevBox/DevBox-win_x64.exe \
+  --title "v1.2.0" \
+  --notes "全新糖果风界面：顶部大搜索 + 分类胶囊 + 分组卡片；深浅色主题重做；24 个工具全部适配"
 ```
 
 每次发新版本：改 `version` → 打包 → 新 tag → 新 Release 上传 exe。

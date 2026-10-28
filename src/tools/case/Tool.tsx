@@ -65,11 +65,7 @@ export default function CaseTool() {
         {outputs.map((o) => (
           <div
             key={o.id}
-            className={`flex cursor-pointer items-center justify-between rounded-lg border px-3 py-2 transition ${
-              style === o.id
-                ? 'border-indigo-400 bg-indigo-500/10'
-                : 'border-black/10 bg-white hover:border-indigo-300 dark:border-white/10 dark:bg-white/5'
-            }`}
+            className={`choice${style === o.id ? ' choice-on' : ''}`}
             onClick={() => setStyle(o.id)}
           >
             <div className="min-w-0">

@@ -85,13 +85,13 @@ export default function RegexTool() {
         <input
           value={pattern}
           onChange={(e) => setPattern(e.target.value)}
-          className="min-w-52 flex-1 rounded-md border border-black/10 bg-white px-3 py-2 font-mono text-sm outline-none focus:border-indigo-400 dark:border-white/10 dark:bg-white/5"
+          className="input flex-1 font-mono"
         />
         <span className="font-mono text-sm opacity-50">/</span>
         <input
           value={flags}
           onChange={(e) => setFlags(e.target.value)}
-          className="w-16 rounded-md border border-black/10 bg-white px-2 py-2 font-mono text-sm outline-none focus:border-indigo-400 dark:border-white/10 dark:bg-white/5"
+          className="input input-sm w-16 font-mono"
         />
         <span className="text-xs opacity-60">
           {matches ? `${matches.spans.length} 个匹配` : '—'}
@@ -116,7 +116,7 @@ export default function RegexTool() {
             {Array.isArray(highlighted)
               ? highlighted.map((p, i) =>
                   p.hit ? (
-                    <mark key={i} className="rounded bg-indigo-500/30 px-0.5 text-indigo-200">
+                    <mark key={i} className="mark">
                       {p.chunk}
                     </mark>
                   ) : (
@@ -127,14 +127,16 @@ export default function RegexTool() {
           </div>
         </Pane>
 
-        {matches && matches.groups.length > 0 ? (
-          <Pane label="分组" className="min-h-20">
+        {matches && matches.groups.some((g) => g.length > 0) ? (
+          <Pane label="捕获分组" className="min-h-20">
             <div className="overflow-auto p-2 font-mono text-xs">
-              {matches.groups.map((g, i) => (
-                <div key={i} className="py-0.5">
-                  #{i + 1}: {g.map((x, j) => `[${j + 1}]${x}`).join(' ') || '(无分组)'}
-                </div>
-              ))}
+              {matches.groups.map((g, i) =>
+                g.length > 0 ? (
+                  <div key={i} className="py-0.5">
+                    第 {i + 1} 处匹配：{g.map((x, j) => `[${j + 1}]${x || '空'}`).join('  ')}
+                  </div>
+                ) : null,
+              )}
             </div>
           </Pane>
         ) : null}
@@ -148,7 +150,7 @@ export default function RegexTool() {
               <input
                 value={replacement}
                 onChange={(e) => setReplacement(e.target.value)}
-                className="border-b border-black/10 bg-transparent px-3 py-2 font-mono text-sm outline-none dark:border-white/10"
+                className="input font-mono"
                 placeholder="替换为，支持 $1 $&"
               />
               <div className="whitespace-pre-wrap break-all px-3 py-2 font-mono text-sm opacity-80">

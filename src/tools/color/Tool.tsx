@@ -12,10 +12,10 @@ import {
 } from './core';
 
 const RATING_META: Record<string, { label: string; cls: string }> = {
-  AAA: { label: 'AAA（≥7:1）', cls: 'bg-emerald-500 text-white' },
-  'AA': { label: 'AA（≥4.5:1）', cls: 'bg-emerald-500/20 text-emerald-600 dark:text-emerald-300' },
-  'AA-Large': { label: 'AA 大字号（≥3:1）', cls: 'bg-amber-500/20 text-amber-600 dark:text-amber-300' },
-  'Fail': { label: '未达标', cls: 'bg-red-500/20 text-red-600 dark:text-red-300' },
+  AAA: { label: 'AAA（≥7:1）', cls: 'bg-[var(--green)] text-white' },
+  'AA': { label: 'AA（≥4.5:1）', cls: 'bg-[var(--green-soft)] text-[var(--green-ink)]' },
+  'AA-Large': { label: 'AA 大字号（≥3:1）', cls: 'bg-[var(--amber-soft)] text-[var(--amber-ink)]' },
+  'Fail': { label: '未达标', cls: 'bg-[var(--danger-soft)] text-[var(--danger)]' },
 };
 
 function SwatchRow({
@@ -62,7 +62,7 @@ export default function ColorTool() {
             type="color"
             value={parsed.ok && /^#[0-9a-f]{6}$/.test(hex) ? hex : '#6366f1'}
             onChange={(e) => setInput(e.target.value)}
-            className="h-8 w-14 cursor-pointer rounded-md border border-black/10 bg-white p-0.5 dark:border-white/10"
+            className="swatch"
             title="取色器"
           />
           <button type="button" className={btn()} onClick={() => setInput('#6366f1')}>
@@ -71,19 +71,18 @@ export default function ColorTool() {
         </div>
       }
     >
-      <div className="grid h-full min-h-0 gap-4 xl:grid-cols-2">
-        <div className="flex flex-col gap-4">
-          <div className="rounded-xl border border-black/10 bg-white p-4 dark:border-white/10 dark:bg-white/5">
+      <div className="grid min-h-0 flex-1 content-start items-start gap-4 xl:grid-cols-2">
+          <div className="panel p-4">
             <div className="mb-3 flex items-center gap-3">
               <span
-                className="h-12 w-12 shrink-0 rounded-lg border border-black/10 dark:border-white/10"
+                className="swatch-lg h-12 w-12 shrink-0"
                 style={{ background: parsed.ok ? displayRgb(parsed.value) : 'transparent' }}
               />
               <input
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 spellCheck={false}
-                className="flex-1 rounded-md border border-black/10 bg-transparent px-3 py-2 font-mono text-sm outline-none focus:border-indigo-400 dark:border-white/10"
+                className="input flex-1 font-mono"
                 placeholder="#6366f1 / rgb(99,102,241) / hsl(239,84%,67%)"
               />
             </div>
@@ -97,44 +96,49 @@ export default function ColorTool() {
             ) : null}
           </div>
 
-          <div className="rounded-xl border border-black/10 bg-white p-4 dark:border-white/10 dark:bg-white/5">
-            <div className="mb-3 text-xs opacity-50">
-                  对比度检查（WCAG，网页内容无障碍指南）：检查两个颜色搭配够不够清晰易读
-                </div>
+          <div className="panel p-4">
+            <div className="mb-3 text-xs" style={{ color: 'var(--muted)' }}>
+              对比度检查（WCAG，网页内容无障碍指南）：检查两个颜色搭配够不够清晰易读
+            </div>
             <div className="flex flex-wrap items-center gap-3 text-sm">
               <input
                 type="color"
                 value={parsedA.ok ? displayRgb(parsedA.value) : '#ffffff'}
                 onChange={(e) => setColorA(e.target.value)}
-                className="h-8 w-14 cursor-pointer rounded-md border border-black/10 bg-white p-0.5 dark:border-white/10"
+                className="swatch"
               />
               <input
                 value={colorA}
                 onChange={(e) => setColorA(e.target.value)}
                 spellCheck={false}
-                className="w-28 rounded-md border border-black/10 bg-transparent px-2 py-1.5 font-mono text-xs outline-none dark:border-white/10"
+                className="input input-sm w-28 font-mono"
               />
-              <span className="opacity-50">vs</span>
+              <span style={{ color: 'var(--muted)' }}>vs</span>
               <input
                 type="color"
                 value={parsedB.ok ? displayRgb(parsedB.value) : '#1f2937'}
                 onChange={(e) => setColorB(e.target.value)}
-                className="h-8 w-14 cursor-pointer rounded-md border border-black/10 bg-white p-0.5 dark:border-white/10"
+                className="swatch"
               />
               <input
                 value={colorB}
                 onChange={(e) => setColorB(e.target.value)}
                 spellCheck={false}
-                className="w-28 rounded-md border border-black/10 bg-transparent px-2 py-1.5 font-mono text-xs outline-none dark:border-white/10"
+                className="input input-sm w-28 font-mono"
               />
             </div>
             {ratio !== null && rating ? (
               <div className="mt-3 flex flex-wrap items-center gap-3">
                 <span className="font-mono text-sm">
-                  对比度 <strong>{ratio.toFixed(2)} : 1</strong>（数字越大越清晰）
+                  对比度 <strong>{ratio.toFixed(2)} : 1</strong>
+                  <span className="ml-2 text-xs" style={{ color: 'var(--muted)' }}>
+                    （数字越大越清晰）
+                  </span>
                 </span>
                 <span
-                  className={`rounded px-2 py-0.5 text-xs font-medium ${RATING_META[rating]?.cls ?? ''}`}
+                  className={`rounded-full px-2.5 py-1 text-[11px] font-extrabold ${
+                    RATING_META[rating]?.cls ?? ''
+                  }`}
                 >
                   {RATING_META[rating]?.label ?? rating}
                 </span>
@@ -157,7 +161,6 @@ export default function ColorTool() {
               </div>
             ) : null}
           </div>
-        </div>
       </div>
     </ToolPage>
   );

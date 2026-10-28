@@ -35,7 +35,7 @@ export default function JsonDiffTool() {
         <>
           <span className="text-xs">
             <span className="text-emerald-500">+{sum.added}</span>{' '}
-            <span className="text-red-500">-{sum.removed}</span>{' '}
+            <span className="text-[var(--danger)]">-{sum.removed}</span>{' '}
             <span className="opacity-50">={sum.same}</span>
           </span>
           <CopyButton text={unified} label="复制差异" />
@@ -53,7 +53,7 @@ export default function JsonDiffTool() {
       }
     >
       <ErrorBanner message={error} />
-      <div className="grid h-full min-h-0 grid-cols-2 gap-4">
+      <div className="grid min-h-0 flex-1 grid-cols-2 gap-4">
         <Pane label="左侧 JSON" className="min-h-56">
           <TextArea value={left} onChange={setLeft} />
         </Pane>
@@ -75,7 +75,7 @@ export default function JsonDiffTool() {
                         l.type === 'add'
                           ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-300'
                           : l.type === 'del'
-                            ? 'bg-red-500/10 text-red-600 dark:text-red-300'
+                            ? 'bg-[var(--danger-soft)] text-[var(--danger)]'
                             : 'opacity-70'
                       }
                     >
